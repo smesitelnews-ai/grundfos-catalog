@@ -38,7 +38,7 @@ export default async function Home() {
             </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight">
-            Grundfos <span className="text-red-500">Premium</span> Catalog
+            Grundfos <span className="text-red-500">Премиум</span> Каталог
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Автоматический мониторинг цен на оригинальные насосы Grundfos в магазинах РФ. Мы находим лучшие предложения.

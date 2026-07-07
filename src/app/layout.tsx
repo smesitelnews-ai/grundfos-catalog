@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin", "cyrillic"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Grundfos Premium Catalog",
+  title: "Премиум Каталог Grundfos",
   description: "Каталог насосов Grundfos с парсером минимальных цен",
 };
 
