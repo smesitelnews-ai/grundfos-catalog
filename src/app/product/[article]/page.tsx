@@ -81,8 +81,8 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
               <div className="space-y-3 mt-6">
                 {product.quantity > 0 ? (
                   <div className="flex items-center gap-3 text-emerald-400 font-medium bg-emerald-400/10 p-3 rounded-xl border border-emerald-400/20">
-                    <Truck size={20} />
-                    <span>Доставка по Москве сегодня!</span>
+                    <Truck size={20} className="flex-shrink-0" />
+                    <span>Доставка по Москве в день обращения, или отгрузка транспортной компанией</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3 text-amber-400 font-medium bg-amber-400/10 p-3 rounded-xl border border-amber-400/20">

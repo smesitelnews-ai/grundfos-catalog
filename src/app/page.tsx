@@ -33,8 +33,21 @@ export default async function Home() {
                 priority
               />
             </div>
-            <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-red-500 tracking-wider uppercase mb-2 text-center">
-              Складские остатки 41км МКАД
+            <div className="w-full text-center">
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-red-500 tracking-wider uppercase mb-2 text-center block">
+                Складские остатки 41км МКАД 📍
+              </span>
+              <div className="rounded-xl overflow-hidden shadow-lg border border-white/10 mb-4 h-[250px] w-full relative group">
+                <iframe 
+                  src="https://yandex.ru/map-widget/v1/-/CTu4eMKR" 
+                  width="100%" 
+                  height="100%" 
+                  frameBorder="0" 
+                  allowFullScreen={true}
+                  className="absolute inset-0"
+                ></iframe>
+                <div className="absolute inset-0 pointer-events-none rounded-xl ring-inset ring-1 ring-white/10 group-hover:ring-white/30 transition-all"></div>
+              </div>
             </div>
             <a href="tel:8777414141" className="bg-red-600 hover:bg-red-500 text-white font-black py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-600/20 text-xl w-full">
               Звоните 8 777 41 41 41!

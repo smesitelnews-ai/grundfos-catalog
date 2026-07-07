@@ -59,9 +59,9 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Доставка и промокод */}
         <div className="mb-5 space-y-2 bg-slate-800/50 rounded-xl p-3 border border-white/5">
           {product.quantity > 0 ? (
-            <div className="flex items-center gap-2 text-sm text-emerald-400 font-medium">
-              <Truck size={16} />
-              <span>Доставка по Москве сегодня!</span>
+            <div className="flex items-start gap-2 text-sm text-emerald-400 font-medium">
+              <Truck size={16} className="mt-1 flex-shrink-0" />
+              <span>Доставка по Москве в день обращения, или отгрузка транспортной компанией</span>
             </div>
           ) : (
             <div className="flex items-center gap-2 text-sm text-amber-400 font-medium">
