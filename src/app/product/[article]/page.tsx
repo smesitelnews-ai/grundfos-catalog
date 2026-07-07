@@ -15,12 +15,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ProductPage({ params }: { params: { article: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ article: string }> }) {
+  const { article } = await params;
   const filePath = path.join(process.cwd(), 'public', 'products.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const products = JSON.parse(fileContents);
   
-  const product = products.find((p: any) => p.article === params.article);
+  const product = products.find((p: any) => p.article === article);
   
   if (!product) {
     notFound();
