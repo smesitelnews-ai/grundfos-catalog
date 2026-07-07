@@ -23,7 +23,7 @@ export default async function Home() {
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-7xl mx-auto">
         <header className="mb-16 text-center space-y-4">
-          <div className="inline-flex flex-col items-center justify-center p-6 bg-black/40 backdrop-blur-md rounded-3xl mb-4 border border-white/10 shadow-2xl shadow-blue-500/10">
+          <div className="inline-flex flex-col items-center justify-center p-6 bg-black/40 backdrop-blur-md rounded-3xl mb-4 border border-white/10 shadow-2xl shadow-blue-500/10 w-full max-w-md mx-auto">
             <div className="relative w-32 h-32 mb-4 drop-shadow-2xl hover:scale-105 transition-transform duration-500">
               <Image 
                 src="/images/logo41.png" 
@@ -33,9 +33,12 @@ export default async function Home() {
                 priority
               />
             </div>
-            <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-red-500 tracking-wider uppercase">
+            <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-red-500 tracking-wider uppercase mb-2 text-center">
               Складские остатки 41км МКАД
             </div>
+            <a href="tel:8777414141" className="bg-red-600 hover:bg-red-500 text-white font-black py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-600/20 text-xl w-full">
+              Звоните 8 777 41 41 41!
+            </a>
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight">
             Grundfos <span className="text-red-500">Премиум</span> Каталог
