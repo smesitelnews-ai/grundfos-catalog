@@ -39,13 +39,23 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
       </div>
       
-      <div className="w-full h-56 relative bg-white/5 flex items-center justify-center p-6 mt-4">
-        <Image 
-          src={product.image} 
-          alt={product.name} 
+      <div className="relative aspect-square mb-6 bg-white rounded-2xl overflow-hidden group-hover:scale-105 transition-transform duration-500 shadow-inner mt-4">
+        <Image
+          src={product.image}
+          alt={product.name}
           fill
-          className="object-contain p-4 group-hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+          className="object-contain p-4"
         />
+        {/* Значок оригинальности */}
+        <div className="absolute top-2 right-2 w-16 h-16 drop-shadow-lg z-10 opacity-90 group-hover:opacity-100 group-hover:rotate-12 transition-all">
+          <Image
+            src="/images/badge.png"
+            alt="100% Original"
+            fill
+            className="object-contain"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
 
       <div className="p-6 flex-1 flex flex-col">

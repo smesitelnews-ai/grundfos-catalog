@@ -60,6 +60,15 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
               fill
               className="object-contain p-12 drop-shadow-2xl"
             />
+            {/* Значок оригинальности */}
+            <div className="absolute top-8 right-8 w-24 h-24 drop-shadow-2xl z-10 opacity-90 hover:opacity-100 hover:rotate-12 hover:scale-110 transition-all cursor-pointer" title="Оригинальный товар">
+              <Image
+                src="/images/badge.png"
+                alt="100% Original"
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
 
           {/* Правая колонка: Основная информация */}
