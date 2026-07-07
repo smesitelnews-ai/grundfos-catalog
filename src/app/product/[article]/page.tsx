@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Info, Settings, Truck, Tag, Package, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Info, Settings, Truck, Tag, Package, ShoppingCart, Clock } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
@@ -79,10 +79,17 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
               </div>
               
               <div className="space-y-3 mt-6">
-                <div className="flex items-center gap-3 text-emerald-400 font-medium bg-emerald-400/10 p-3 rounded-xl border border-emerald-400/20">
-                  <Truck size={20} />
-                  <span>Доставка по Москве</span>
-                </div>
+                {product.quantity > 0 ? (
+                  <div className="flex items-center gap-3 text-emerald-400 font-medium bg-emerald-400/10 p-3 rounded-xl border border-emerald-400/20">
+                    <Truck size={20} />
+                    <span>Доставка по Москве</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 text-amber-400 font-medium bg-amber-400/10 p-3 rounded-xl border border-amber-400/20">
+                    <Clock size={20} />
+                    <span>Под заказ: доставка через 20 дней</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-3 text-amber-400 font-medium bg-amber-400/10 p-3 rounded-xl border border-amber-400/20">
                   <Tag size={20} />
                   <span>Скидочный промокод при доставке в подарок</span>

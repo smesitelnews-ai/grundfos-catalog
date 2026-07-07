@@ -34,8 +34,15 @@ with open(file_path, 'r', encoding='utf-8') as f:
     products = json.load(f)
 
 for product in products:
+    # Calculate authentic price (minimum price among shops with in_stock == True)
+    in_stock_prices = [shop['price'] for shop in product.get('shops', []) if shop.get('in_stock', False)]
+    if in_stock_prices:
+        authentic_price = min(in_stock_prices)
+    else:
+        authentic_price = product['min_price'] # fallback
+
     # Set our price
-    product['our_price'] = max(0, product['min_price'] - 1000)
+    product['our_price'] = max(0, authentic_price - 1000)
     
     # Set quantity
     article = product.get('article', '')

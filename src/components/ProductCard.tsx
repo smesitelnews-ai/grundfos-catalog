@@ -58,10 +58,17 @@ export default function ProductCard({ product }: { product: Product }) {
         
         {/* Доставка и промокод */}
         <div className="mb-5 space-y-2 bg-slate-800/50 rounded-xl p-3 border border-white/5">
-          <div className="flex items-center gap-2 text-sm text-emerald-400 font-medium">
-            <Truck size={16} />
-            <span>Быстрая доставка по Москве</span>
-          </div>
+          {product.quantity > 0 ? (
+            <div className="flex items-center gap-2 text-sm text-emerald-400 font-medium">
+              <Truck size={16} />
+              <span>Быстрая доставка по Москве</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-sm text-amber-400 font-medium">
+              <Clock size={16} />
+              <span>Под заказ: доставка через 20 дней</span>
+            </div>
+          )}
           <div className="flex items-center gap-2 text-xs text-amber-400 font-medium bg-amber-400/10 w-fit px-2 py-1 rounded">
             <Tag size={12} />
             <span>Скидочный промокод при доставке</span>
