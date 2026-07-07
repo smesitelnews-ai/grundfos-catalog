@@ -18,13 +18,15 @@ interface Product {
   image: string;
 }
 
+import Link from 'next/link';
+
 export default function ProductCard({ product }: { product: Product }) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
   };
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden flex flex-col h-full relative group">
+    <Link href={`/product/${product.article}`} className="glass-card rounded-2xl overflow-hidden flex flex-col h-full relative group block">
       <div className="absolute top-4 right-4 z-10">
         <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
           <TrendingDown size={14} /> От {formatPrice(product.min_price)}
@@ -87,6 +89,6 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
