@@ -26,6 +26,11 @@ export default function ProductPage({ params }: { params: { article: string } })
     notFound();
   }
 
+  const imagePath = `/images/pumps/${product.article}.jpg`;
+  const localPath = path.join(process.cwd(), 'public', imagePath);
+  const hasRealImage = fs.existsSync(localPath);
+  const displayImage = hasRealImage ? imagePath : '/images/grundfos_pump.png';
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
   };
@@ -42,7 +47,7 @@ export default function ProductPage({ params }: { params: { article: string } })
           {/* Левая колонка: Изображение */}
           <div className="glass-panel rounded-3xl p-8 flex items-center justify-center relative min-h-[400px]">
             <Image 
-              src={product.image} 
+              src={displayImage} 
               alt={product.name} 
               fill
               className="object-contain p-8 drop-shadow-2xl"
