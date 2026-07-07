@@ -1,0 +1,698 @@
+[
+  {
+    "article": "99411175",
+    "name": "ALPHA2 25-60 180",
+    "min_price": 32000,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 32000,
+        "price_text": "от 32 000 ₽ (уточняйте)",
+        "url": "https://rus-grundfos.ru/search/?q=99411175",
+        "in_stock": false
+      },
+      {
+        "name": "GF-Shop",
+        "price": 44833,
+        "price_text": "44 833 ₽",
+        "url": "https://gf-shop.ru/search?q=99411175",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 46200,
+        "price_text": "46 200 ₽ (наличие уточняется)",
+        "url": "https://www.vseinstrumenti.ru/search/?what=99411175",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "99411178",
+    "name": "ALPHA2 25-80 180",
+    "min_price": 54890,
+    "shops": [
+      {
+        "name": "GF-Shop",
+        "price": 54890,
+        "price_text": "54 890 ₽",
+        "url": "https://gf-shop.ru/search?q=99411178",
+        "in_stock": true
+      },
+      {
+        "name": "Тепловоз",
+        "price": 57900,
+        "price_text": "57 900 ₽ (под заказ)",
+        "url": "https://teplovoz.ru/search?q=99411178",
+        "in_stock": false
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 58336,
+        "price_text": "58 336 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=99411178",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "97775315",
+    "name": "Sololift2 WC-3",
+    "min_price": 39000,
+    "shops": [
+      {
+        "name": "Proteplo-SPB",
+        "price": 39000,
+        "price_text": "39 000 ₽",
+        "url": "https://yandex.ru/search/?text=proteplo-spb+97775315",
+        "in_stock": true
+      },
+      {
+        "name": "Rus-Grundfos",
+        "price": 51520,
+        "price_text": "51 520 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=97775315",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 69985,
+        "price_text": "69 985 ₽",
+        "url": "https://gf-shop.ru/search?q=97775315",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "012H1900",
+    "name": "UNILIFT KP 250-AV1",
+    "min_price": 35600,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 35600,
+        "price_text": "от 35 600 ₽ (прайс)",
+        "url": "https://rus-grundfos.ru/search/?q=012H1900",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 51775,
+        "price_text": "51 775 ₽",
+        "url": "https://gf-shop.ru/search?q=012H1900",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 54800,
+        "price_text": "54 800 ₽ (резерв)",
+        "url": "https://www.vseinstrumenti.ru/search/?what=012H1900",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "92713068",
+    "name": "SBA 3-45 A",
+    "min_price": 45080,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 45080,
+        "price_text": "45 080 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=92713068",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 67375,
+        "price_text": "67 375 ₽",
+        "url": "https://gf-shop.ru/search?q=92713068",
+        "in_stock": true
+      },
+      {
+        "name": "Conspar",
+        "price": 72610,
+        "price_text": "72 610 ₽",
+        "url": "https://yandex.ru/search/?text=conspar+92713068",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "99160584",
+    "name": "ALPHA1 L 25-60 180",
+    "min_price": 26500,
+    "shops": [
+      {
+        "name": "ВсеИнструменты",
+        "price": 26500,
+        "price_text": "26 500 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=99160584",
+        "in_stock": true
+      },
+      {
+        "name": "Теплодвор",
+        "price": 27800,
+        "price_text": "27 800 ₽",
+        "url": "https://yandex.ru/search/?text=теплодвор+99160584",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 29400,
+        "price_text": "29 400 ₽",
+        "url": "https://gf-shop.ru/search?q=99160584",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "97916771",
+    "name": "COMFORT 15-14 B PM",
+    "min_price": 19985,
+    "shops": [
+      {
+        "name": "GF-Shop",
+        "price": 19985,
+        "price_text": "19 985 ₽",
+        "url": "https://gf-shop.ru/search?q=97916771",
+        "in_stock": true
+      },
+      {
+        "name": "Теплодвор",
+        "price": 21640,
+        "price_text": "21 640 ₽",
+        "url": "https://yandex.ru/search/?text=теплодвор+97916771",
+        "in_stock": true
+      },
+      {
+        "name": "Тепловоз",
+        "price": 29744,
+        "price_text": "29 744 ₽",
+        "url": "https://teplovoz.ru/search?q=97916771",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "012H1800",
+    "name": "UNILIFT KP 250-A1",
+    "min_price": 39800,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 39800,
+        "price_text": "от 39 800 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=012H1800",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 49985,
+        "price_text": "49 985 ₽",
+        "url": "https://gf-shop.ru/search?q=012H1800",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 67834,
+        "price_text": "67 834 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=012H1800",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "97775318",
+    "name": "Sololift2 D-2",
+    "min_price": 31500,
+    "shops": [
+      {
+        "name": "Proteplo-SPB",
+        "price": 31500,
+        "price_text": "31 500 ₽",
+        "url": "https://yandex.ru/search/?text=proteplo-spb+97775318",
+        "in_stock": true
+      },
+      {
+        "name": "Терем",
+        "price": 34578,
+        "price_text": "34 578 ₽",
+        "url": "https://yandex.ru/search/?text=терем+97775318",
+        "in_stock": true
+      },
+      {
+        "name": "Santehnica.ru",
+        "price": 48532,
+        "price_text": "48 532 ₽",
+        "url": "https://yandex.ru/search/?text=santehnica.ru+97775318",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "011H1900",
+    "name": "UNILIFT KP 150-AV1",
+    "min_price": 29440,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 29440,
+        "price_text": "29 440 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=011H1900",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 39400,
+        "price_text": "39 400 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=011H1900",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 42985,
+        "price_text": "42 985 ₽",
+        "url": "https://gf-shop.ru/search?q=011H1900",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "97775314",
+    "name": "Sololift2 WC-1",
+    "min_price": 41950,
+    "shops": [
+      {
+        "name": "Santshop",
+        "price": 41950,
+        "price_text": "41 950 ₽",
+        "url": "https://yandex.ru/search/?text=santshop+97775314",
+        "in_stock": true
+      },
+      {
+        "name": "Rus-Grundfos",
+        "price": 46920,
+        "price_text": "46 920 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=97775314",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 59100,
+        "price_text": "59 100 ₽",
+        "url": "https://gf-shop.ru/search?q=97775314",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "59643500",
+    "name": "UP 20-30 N 150",
+    "min_price": 25806,
+    "shops": [
+      {
+        "name": "Терем",
+        "price": 25806,
+        "price_text": "25 806 ₽",
+        "url": "https://yandex.ru/search/?text=терем+59643500",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 37242,
+        "price_text": "37 242 ₽",
+        "url": "https://gf-shop.ru/search?q=59643500",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 47367,
+        "price_text": "47 367 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=59643500",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "92713101",
+    "name": "SBA 3-45 AW",
+    "min_price": 55200,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 55200,
+        "price_text": "55 200 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=92713101",
+        "in_stock": true
+      },
+      {
+        "name": "Русклимат",
+        "price": 72029,
+        "price_text": "72 029 ₽",
+        "url": "https://yandex.ru/search/?text=русклимат+92713101",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 83040,
+        "price_text": "83 040 ₽",
+        "url": "https://gf-shop.ru/search?q=92713101",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "99411221",
+    "name": "ALPHA2 32-60 180",
+    "min_price": 49500,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 49500,
+        "price_text": "49 500 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=99411221",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 52100,
+        "price_text": "52 100 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=99411221",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 56015,
+        "price_text": "56 015 ₽",
+        "url": "https://gf-shop.ru/search?q=99411221",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "59641500",
+    "name": "UP 20-15 N 150",
+    "min_price": 29400,
+    "shops": [
+      {
+        "name": "Терем",
+        "price": 29400,
+        "price_text": "29 400 ₽",
+        "url": "https://yandex.ru/search/?text=терем+59641500",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 31985,
+        "price_text": "31 985 ₽",
+        "url": "https://gf-shop.ru/search?q=59641500",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 42279,
+        "price_text": "42 279 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=59641500",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "013N1800",
+    "name": "UNILIFT KP 350-A1",
+    "min_price": 45000,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 45000,
+        "price_text": "от 45 000 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=013N1800",
+        "in_stock": true
+      },
+      {
+        "name": "Tdkomfort",
+        "price": 58579,
+        "price_text": "58 579 ₽",
+        "url": "https://yandex.ru/search/?text=tdkomfort+013N1800",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 63985,
+        "price_text": "63 985 ₽",
+        "url": "https://gf-shop.ru/search?q=013N1800",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "92712336",
+    "name": "SB 3-35 AW",
+    "min_price": 45080,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 45080,
+        "price_text": "45 080 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=92712336",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 49800,
+        "price_text": "49 800 ₽",
+        "url": "https://gf-shop.ru/search?q=92712336",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 56400,
+        "price_text": "56 400 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=92712336",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "95906472",
+    "name": "UP 20-45 N 150",
+    "min_price": 38985,
+    "shops": [
+      {
+        "name": "GF-Shop",
+        "price": 38985,
+        "price_text": "38 985 ₽",
+        "url": "https://gf-shop.ru/search?q=95906472",
+        "in_stock": true
+      },
+      {
+        "name": "Терем",
+        "price": 40800,
+        "price_text": "40 800 ₽",
+        "url": "https://yandex.ru/search/?text=терем+95906472",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 44514,
+        "price_text": "44 514 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=95906472",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "92712333",
+    "name": "SB 3-35 A",
+    "min_price": 34960,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 34960,
+        "price_text": "34 960 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=92712333",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 44200,
+        "price_text": "44 200 ₽",
+        "url": "https://gf-shop.ru/search?q=92712333",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 48900,
+        "price_text": "48 900 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=92712333",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "96280966",
+    "name": "UNILIFT CC5 - A1",
+    "min_price": 17664,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 17664,
+        "price_text": "17 664 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=96280966",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 24900,
+        "price_text": "24 900 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=96280966",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 27985,
+        "price_text": "27 985 ₽",
+        "url": "https://gf-shop.ru/search?q=96280966",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "96280970",
+    "name": "UNILIFT CC9 - A1",
+    "min_price": 26680,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 26680,
+        "price_text": "26 680 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=96280970",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 36800,
+        "price_text": "36 800 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=96280970",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 40685,
+        "price_text": "40 685 ₽",
+        "url": "https://gf-shop.ru/search?q=96280970",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "99371964",
+    "name": "ALPHA3 32-60 180",
+    "min_price": 42100,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 42100,
+        "price_text": "42 100 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=99371964",
+        "in_stock": true
+      },
+      {
+        "name": "Valves-msk",
+        "price": 44999,
+        "price_text": "44 999 ₽",
+        "url": "https://yandex.ru/search/?text=valves-msk+99371964",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 48400,
+        "price_text": "48 400 ₽",
+        "url": "https://gf-shop.ru/search?q=99371964",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "99411263",
+    "name": "ALPHA2 32-80 180",
+    "min_price": 56201,
+    "shops": [
+      {
+        "name": "GF-Shop",
+        "price": 56201,
+        "price_text": "56 201 ₽",
+        "url": "https://gf-shop.ru/search?q=99411263",
+        "in_stock": true
+      },
+      {
+        "name": "Тепловод",
+        "price": 57400,
+        "price_text": "57 400 ₽",
+        "url": "https://yandex.ru/search/?text=тепловод+99411263",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 58900,
+        "price_text": "58 900 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=99411263",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  },
+  {
+    "article": "92712346",
+    "name": "SB 3-45 AW",
+    "min_price": 46920,
+    "shops": [
+      {
+        "name": "Rus-Grundfos",
+        "price": 46920,
+        "price_text": "46 920 ₽",
+        "url": "https://rus-grundfos.ru/search/?q=92712346",
+        "in_stock": true
+      },
+      {
+        "name": "GF-Shop",
+        "price": 56800,
+        "price_text": "56 800 ₽",
+        "url": "https://gf-shop.ru/search?q=92712346",
+        "in_stock": true
+      },
+      {
+        "name": "ВсеИнструменты",
+        "price": 60400,
+        "price_text": "60 400 ₽",
+        "url": "https://www.vseinstrumenti.ru/search/?what=92712346",
+        "in_stock": true
+      }
+    ],
+    "image": "/images/grundfos_pump.png"
+  }
+]

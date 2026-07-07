@@ -1,0 +1,34 @@
+name: Daily Price Update
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Запускается каждый день в полночь по UTC
+  workflow_dispatch: # Позволяет запускать вручную
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          
+      - name: Run parser to update prices
+        run: |
+          # Здесь в будущем будет запускаться настоящий веб-скрапер для парсинга цен с сайтов.
+          # Сейчас мы просто пересобираем базу данных из исходного файла (если он изменился).
+          python build_db.py
+          
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/products.json
+          # Commit only if there are changes
+          git diff --quiet && git diff --staged --quiet || git commit -m "Автоматическое ежедневное обновление цен"
+          git push
