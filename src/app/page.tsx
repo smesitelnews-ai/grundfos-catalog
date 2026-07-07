@@ -1,12 +1,23 @@
 import fs from 'fs';
 import path from 'path';
-import ProductCard from '@/components/ProductCard';
-import { Droplets, Search } from 'lucide-react';
+import { Droplets } from 'lucide-react';
+import CatalogClient from '@/components/CatalogClient';
 
 export default async function Home() {
   const filePath = path.join(process.cwd(), 'public', 'products.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const products = JSON.parse(fileContents);
+
+  // Обогащаем товары реальными путями к картинкам
+  const enrichedProducts = products.map((product: any) => {
+    const imagePath = `/images/pumps/${product.article}.jpg`;
+    const localPath = path.join(process.cwd(), 'public', imagePath);
+    const hasRealImage = fs.existsSync(localPath);
+    return {
+      ...product,
+      image: hasRealImage ? imagePath : '/images/grundfos_pump.png'
+    };
+  });
 
   return (
     <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative z-10">
@@ -23,28 +34,7 @@ export default async function Home() {
           </p>
         </header>
         
-        <div className="glass-panel rounded-xl p-4 mb-12 flex items-center gap-3 max-w-md mx-auto">
-          <Search className="text-slate-400" />
-          <input 
-            type="text" 
-            placeholder="Поиск по артикулу или названию..." 
-            className="bg-transparent border-none outline-none text-white w-full placeholder:text-slate-500"
-            disabled
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {products.map((product: any) => {
-            const imagePath = `/images/pumps/${product.article}.jpg`;
-            const localPath = path.join(process.cwd(), 'public', imagePath);
-            const hasRealImage = fs.existsSync(localPath);
-            const displayProduct = {
-              ...product,
-              image: hasRealImage ? imagePath : '/images/grundfos_pump.png'
-            };
-            return <ProductCard key={product.article} product={displayProduct} />;
-          })}
-        </div>
+        <CatalogClient products={enrichedProducts} />
       </div>
     </main>
   );
