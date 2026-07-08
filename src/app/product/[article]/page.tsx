@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
     notFound();
   }
 
-  const imagePath = `/images/pumps/${product.article}.jpg`;
+  const imagePath = `/images/pumps_v2/${product.article}.jpg`;
   const localPath = path.join(process.cwd(), 'public', imagePath);
   const hasRealImage = fs.existsSync(localPath);
   const displayImage = hasRealImage ? imagePath + '?v=2' : '/images/grundfos_pump.png';
