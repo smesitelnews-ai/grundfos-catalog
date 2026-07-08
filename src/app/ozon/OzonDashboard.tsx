@@ -86,26 +86,52 @@ export default function OzonDashboard() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/ozon/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientId: cId, apiKey: aKey })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setOzonProducts(data.products || []);
-        if (data.stats) {
-          setOzonStats(data.stats);
+      const { browserOzonFetch } = await import('../../lib/ozon/ozonClient');
+      
+      const getCount = async (visibility: string) => {
+        try {
+          const res = await browserOzonFetch<any>('/v3/product/list', {
+            method: 'POST', clientId: cId, apiKey: aKey,
+            body: { filter: { visibility }, limit: 1 }
+          });
+          return res?.result?.total || 0;
+        } catch {
+          return 0;
         }
-      } else {
-        setError(data.error || 'Ошибка загрузки товаров');
-        if (data.error?.includes('401') || data.error?.includes('403')) {
-          handleLogout(); // Неверные ключи
+      };
+
+      const [total, active, errorsCount] = await Promise.all([
+        getCount("ALL"),
+        getCount("VISIBLE"),
+        getCount("STATE_FAILED")
+      ]);
+
+      const listResponse = await browserOzonFetch<any>('/v3/product/list', {
+        method: 'POST', clientId: cId, apiKey: aKey,
+        body: { filter: { visibility: "ALL" }, limit: 50 }
+      });
+
+      const items = listResponse?.result?.items || [];
+      const productIds = items.map((i: any) => i.product_id);
+
+      let allProducts: any[] = [];
+      if (productIds.length > 0) {
+        try {
+          const infoResponse = await browserOzonFetch<any>('/v3/product/info/list', {
+            method: 'POST', clientId: cId, apiKey: aKey,
+            body: { product_id: productIds, offer_id: [], sku: [] }
+          });
+          allProducts = infoResponse?.items || infoResponse?.result?.items || [];
+        } catch (error) {
+          console.error(`[Ozon] Ошибка при загрузке деталей товаров:`, error);
         }
       }
-    } catch (err) {
-      console.error(err);
-      setError('Ошибка сети');
+
+      setOzonProducts(allProducts);
+      setOzonStats({ total, active, errors: errorsCount });
+    } catch (error: any) {
+      console.error("[Ozon fetch error]", error);
+      setError(error.message || "Неизвестная ошибка");
     } finally {
       setIsLoading(false);
     }
@@ -121,29 +147,84 @@ export default function OzonDashboard() {
     const productsToExport = productsData.filter(p => finalSettings.selectedProductIds.has(p.article));
 
     try {
-      const res = await fetch('/api/ozon/export', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          products: productsToExport, 
-          vat: finalSettings.vat,
-          clientId,
-          apiKey,
-          settings: finalSettings
-        })
-      });
-      const data = await res.json();
+      const { browserOzonFetch } = await import('../../lib/ozon/ozonClient');
+      const { mapProductToOzonAttributes, generateEan13 } = await import('../../lib/ozon/attributeMapper');
       
-      if (data.success) {
-        setExportMessage({ type: 'success', text: data.message });
+      const items = productsToExport.map((product: any) => {
+        let typeId = 98340;
+        let ozonCategoryName = "Насос поверхностный";
+        const pumpType = product.specs?.["Тип насоса"]?.toLowerCase() || "";
+        if (pumpType.includes("погружной") || pumpType.includes("дренажный") || pumpType.includes("скважинный")) {
+          typeId = 91462;
+          ozonCategoryName = "Насос погружной";
+        } else if (pumpType.includes("станция")) {
+          typeId = 91468;
+          ozonCategoryName = "Насосная станция";
+        }
+
+        const depth = finalSettings.depth || 300;
+        const width = finalSettings.width || 200;
+        const height = finalSettings.height || 150;
+        const weight = finalSettings.weight || 2500;
+
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grundfos-catalog-demo.vercel.app";
+        const primaryImage = product.image ? (product.image.startsWith('http') ? product.image : `${baseUrl}${product.image}`) : undefined;
+
+        const item: any = {
+          description_category_id: 83625738,
+          name: `Насос ${product.name}`,
+          offer_id: product.article,
+          vat: finalSettings.vat,
+          currency_code: "RUB",
+          depth, width, height,
+          dimension_unit: "mm",
+          weight, weight_unit: "g",
+          attributes: mapProductToOzonAttributes(product, ozonCategoryName, finalSettings),
+          complex_attributes: []
+        };
+
+        if (finalSettings.exportPrice) {
+          const basePrice = product.our_price || product.min_price || 10000;
+          const markupPercent = Number(finalSettings.markup) || 0;
+          const finalPrice = Math.round(basePrice * (1 + markupPercent / 100));
+          item.price = String(finalPrice);
+        } else {
+          item.price = "0";
+        }
+
+        if (finalSettings.exportBarcode) {
+          item.barcode = product.barcode || generateEan13(product.article);
+        }
+
+        if (finalSettings.exportImages && primaryImage) {
+          item.primary_image = primaryImage;
+          item.images = [primaryImage];
+        } else {
+          item.primary_image = "";
+          item.images = [];
+        }
+
+        return item;
+      });
+
+      console.log(`[Browser Ozon Export] Отправка ${items.length} товаров на Ozon...`);
+      const response = await browserOzonFetch<any>('/v3/product/import', {
+        method: 'POST',
+        body: { items },
+        clientId,
+        apiKey
+      });
+
+      if (response && response.result) {
+        setExportMessage({ type: 'success', text: `Задание на импорт успешно создано. Task ID: ${response.result.task_id}` });
         // После выгрузки обновляем статистику на дашборде
         await fetchOzonProducts(clientId, apiKey);
       } else {
-        setExportMessage({ type: 'error', text: data.error || 'Неизвестная ошибка' });
+        setExportMessage({ type: 'error', text: 'Ошибка: Не получен ответ от Ozon API' });
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      setExportMessage({ type: 'error', text: 'Ошибка сети при обращении к API' });
+      setExportMessage({ type: 'error', text: e.message || 'Ошибка сети при обращении к API' });
     } finally {
       setIsExporting(false);
     }

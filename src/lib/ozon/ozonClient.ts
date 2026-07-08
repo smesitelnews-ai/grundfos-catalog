@@ -65,3 +65,44 @@ export async function ozonFetch<T = unknown>(
     throw error;
   }
 }
+
+/**
+ * Выполняет прямой запрос к Ozon Seller API из браузера (CORS поддерживается Ozon).
+ * Это позволяет избежать таймаутов (10s) и блокировок IP от серверов Vercel.
+ */
+export async function browserOzonFetch<T = unknown>(
+  endpoint: string,
+  options: OzonRequestOptions
+): Promise<T> {
+  const { clientId, apiKey, method = 'POST', body } = options;
+
+  if (!clientId || !apiKey) {
+    throw new Error('Не заданы ключи авторизации Client-Id и Api-Key.');
+  }
+
+  const url = `${OZON_API_BASE}${endpoint}`;
+  console.log(`[Browser OzonAPI] ${method} ${url}`);
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Client-Id': clientId,
+        'Api-Key': apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[Browser OzonAPI] Ошибка ${response.status}:`, errorText);
+      throw new Error(`Ozon API ошибка ${response.status}: ${errorText}`);
+    }
+
+    return await response.json() as T;
+  } catch (error: any) {
+    console.error(`[Browser OzonAPI] Сетевая ошибка:`, error);
+    throw new Error(`Сетевая ошибка при подключении к Ozon API: ${error.message}`);
+  }
+}

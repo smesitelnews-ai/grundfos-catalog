@@ -36,14 +36,16 @@ export function OzonProductRow({ product, clientId, apiKey }: OzonProductRowProp
     if (!isExpanded && !attributes) {
       setIsLoadingAttrs(true);
       try {
-        const res = await fetch('/api/ozon/product-attributes', {
+        const { browserOzonFetch } = await import('../../lib/ozon/ozonClient');
+        const data = await browserOzonFetch<any>('/v4/product/info/attributes', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ clientId, apiKey, productId: product.id })
+          clientId,
+          apiKey,
+          body: { filter: { product_id: [product.id] }, limit: 1 }
         });
-        const data = await res.json();
-        if (data.success) {
-          setAttributes(data.attributes);
+        
+        if (data && data.result && data.result.length > 0) {
+          setAttributes(data.result[0]);
         }
       } catch (err) {
         console.error(err);
