@@ -156,8 +156,8 @@ export default function CatalogClient({ products }: { products: Product[] }) {
         {/* Product Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.article} product={product} />
+            {filteredProducts.map((product, idx) => (
+              <ProductCard key={product.article} product={product} priority={idx < 6} />
             ))}
           </div>
         ) : (

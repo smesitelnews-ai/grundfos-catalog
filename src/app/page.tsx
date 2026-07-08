@@ -46,6 +46,7 @@ export default async function Home() {
                     height="100%" 
                     frameBorder="0" 
                     allowFullScreen={true}
+                    loading="lazy"
                     className="absolute inset-0"
                   ></iframe>
                 </div>
