@@ -11,7 +11,7 @@ export default async function Home() {
 
   // Обогащаем товары реальными путями к картинкам
   const enrichedProducts = products.map((product: any) => {
-    const imagePath = `/images/pumps_v2/${product.article}.jpg`;
+    const imagePath = `/images/pumps_v3/${product.article}.jpg`;
     const localPath = path.join(process.cwd(), 'public', imagePath);
     const hasRealImage = fs.existsSync(localPath);
     return {
