@@ -8,9 +8,9 @@ from rembg import remove
 # Paths
 PRODUCTS_FILE = 'public/products.json'
 INPUT_DIR = 'public/images/pumps'
-OUTPUT_DIR = 'public/images/pumps_v8'
+OUTPUT_DIR = 'public/images/pumps_v9'
 BG_DIR = 'public/images/bg'
-BADGE_PATH = 'public/images/badge.png'
+BADGE_PATH = ''
 FONT_BOLD = 'public/fonts/Roboto-Bold.ttf'
 FONT_REGULAR = 'public/fonts/Roboto-Regular.ttf'
 
