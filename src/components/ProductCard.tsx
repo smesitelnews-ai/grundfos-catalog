@@ -81,8 +81,13 @@ export default function ProductCard({ product }: { product: Product }) {
             </span>
           </div>
           {product.shops.length > 0 && (
-            <div className="text-sm text-muted-foreground line-through decoration-red-500/50">
-              {product.shops[0].price_text.replace('Ссылка', '').trim()}
+            <div className="flex flex-col gap-1 mt-1">
+              {product.shops.slice(0, 3).map((shop, idx) => (
+                <div key={idx} className="flex justify-between items-center text-[11px] bg-gray-50 dark:bg-zinc-800/50 px-1.5 py-0.5 rounded">
+                  <span className="text-muted-foreground truncate max-w-[100px]">{shop.name}</span>
+                  <span className="text-red-500/70 line-through decoration-red-500/30 font-medium">{formatPrice(shop.price)}</span>
+                </div>
+              ))}
             </div>
           )}
         </div>
