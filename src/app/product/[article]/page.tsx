@@ -28,7 +28,7 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
     notFound();
   }
 
-  const imagePath = `/images/pumps_v8/${product.article}.jpg`;
+  const imagePath = `/images/pumps/${product.article}.jpg`;
   const localPath = path.join(process.cwd(), 'public', imagePath);
   const hasRealImage = fs.existsSync(localPath);
   const displayImage = hasRealImage ? imagePath : '/images/grundfos_pump.png';
@@ -38,17 +38,17 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
   };
 
   return (
-    <main className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#f5f6f8]">
+    <main className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative z-10 bg-background">
       <div className="max-w-6xl mx-auto">
-        <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-[#005bff] mb-8 transition-colors font-medium">
+        <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors font-medium">
           <ArrowLeft size={20} />
           <span>Вернуться в каталог</span>
         </Link>
         
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Левая колонка: Изображение */}
-            <div className="p-8 flex flex-col items-center justify-center relative min-h-[400px] border-b lg:border-b-0 lg:border-r border-gray-100 bg-white">
+            <div className="p-8 flex flex-col items-center justify-center relative min-h-[400px] border-b lg:border-b-0 lg:border-r border-border bg-white rounded-l-2xl">
               <div className="absolute top-6 left-6 z-10 flex flex-col gap-2">
                 {product.shops[0]?.price > product.our_price && (
                   <span className="bg-[#f91155] text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
@@ -61,6 +61,13 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
                   </span>
                 )}
               </div>
+              
+              {/* Fire & Water Badge */}
+              <div className="absolute top-6 right-6 z-20 w-24 h-24 rounded-full bg-gradient-to-br from-[#f91155] via-[#fc8b14] to-[#005bff] flex flex-col items-center justify-center shadow-lg border-4 border-white text-white rotate-[15deg] transform hover:scale-110 transition-transform">
+                <span className="text-[14px] font-black tracking-tighter uppercase leading-none mt-1">Grundfos</span>
+                <span className="text-[10px] font-bold uppercase leading-tight mt-0.5">Оригинал</span>
+              </div>
+
               <Image 
                 src={displayImage} 
                 alt={product.name} 
@@ -71,31 +78,31 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
 
             {/* Правая колонка: Основная информация */}
             <div className="p-8 lg:p-10 flex flex-col">
-              <div className="text-gray-400 font-mono tracking-wider mb-2 text-sm">
+              <div className="text-muted-foreground font-mono tracking-wider mb-2 text-sm">
                 Артикул: {product.article}
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-6 leading-tight">
                 {product.name}
               </h1>
               
               {/* Наша цена */}
               <div className="mb-8">
                 <div className="flex items-baseline gap-4 mb-1">
-                  <span className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">{formatPrice(product.our_price)}</span>
+                  <span className="text-4xl md:text-5xl font-black text-foreground tracking-tight">{formatPrice(product.our_price)}</span>
                   {product.shops.length > 0 && (
-                    <span className="text-xl text-gray-400 line-through decoration-red-500/50">{product.shops[0].price_text.replace('Ссылка', '').trim()}</span>
+                    <span className="text-xl text-muted-foreground line-through decoration-red-500/50">{product.shops[0].price_text.replace('Ссылка', '').trim()}</span>
                   )}
                 </div>
               </div>
               
               <div className="space-y-3 mb-8">
                 {product.quantity > 0 ? (
-                  <div className="flex items-center gap-3 text-green-700 font-medium bg-green-50 px-4 py-3 rounded-xl">
+                  <div className="flex items-center gap-3 text-green-500 font-medium bg-green-500/10 px-4 py-3 rounded-xl">
                     <Truck size={20} className="flex-shrink-0" />
-                    <span>Доставка по Москве от 1 дня</span>
+                    <span>Доставка по Москве сегодня</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-amber-700 font-medium bg-amber-50 px-4 py-3 rounded-xl">
+                  <div className="flex items-center gap-3 text-amber-500 font-medium bg-amber-500/10 px-4 py-3 rounded-xl">
                     <Clock size={20} />
                     <span>Под заказ: доставка через 20 дней</span>
                   </div>
@@ -114,8 +121,8 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
               
               {product.description && (
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Описание</h3>
-                  <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap">
+                  <h3 className="text-lg font-bold text-foreground mb-3">Описание</h3>
+                  <p className="text-muted-foreground leading-relaxed text-sm whitespace-pre-wrap">
                     {product.description}
                   </p>
                 </div>
@@ -126,15 +133,85 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
 
         {/* Блок характеристик на всю ширину */}
         {product.specs && Object.keys(product.specs).length > 0 && (
-          <div className="mt-8 bg-white rounded-2xl p-8 md:p-10 border border-gray-200 shadow-sm">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">Характеристики</h3>
+          <div className="mt-8 bg-card rounded-2xl p-8 md:p-10 border border-border shadow-sm">
+            <h3 className="text-2xl font-bold text-foreground mb-8">Характеристики</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0">
               {Object.entries(product.specs).map(([key, value]) => (
-                <div key={key} className="flex justify-between py-3 border-b border-gray-100 last:border-b-0 md:last:border-b">
-                  <span className="text-gray-500">{key}</span>
-                  <span className="text-gray-900 font-medium text-right max-w-[60%]">{value as string}</span>
+                <div key={key} className="flex justify-between py-3 border-b border-border last:border-b-0 md:last:border-b">
+                  <span className="text-muted-foreground">{key}</span>
+                  <span className="text-foreground font-medium text-right max-w-[60%]">{value as string}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Блок цен конкурентов */}
+        {product.shops && product.shops.length > 0 && (
+          <div className="mt-8 mb-8 bg-card rounded-2xl p-8 md:p-10 border border-border shadow-sm">
+            <h3 className="text-2xl font-bold text-foreground mb-8">Сравнение цен (Конкуренты)</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-border text-muted-foreground text-sm uppercase tracking-wider">
+                    <th className="py-4 px-4 font-medium">Магазин</th>
+                    <th className="py-4 px-4 font-medium text-center">Наличие</th>
+                    <th className="py-4 px-4 font-medium text-right">Цена</th>
+                    <th className="py-4 px-4 font-medium text-center">Ссылка</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {product.shops.map((shop: any, idx: number) => (
+                    <tr key={idx} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                      <td className="py-4 px-4 font-medium text-foreground">
+                        {shop.name}
+                      </td>
+                      <td className="py-4 px-4 text-center">
+                        {shop.in_stock ? (
+                          <span className="text-green-500 text-xs font-bold bg-green-500/10 px-2.5 py-1.5 rounded-md">В наличии</span>
+                        ) : (
+                          <span className="text-muted-foreground text-xs font-medium bg-muted px-2.5 py-1.5 rounded-md">Под заказ</span>
+                        )}
+                      </td>
+                      <td className="py-4 px-4 text-right font-bold text-foreground whitespace-nowrap">
+                        {formatPrice(shop.price)}
+                      </td>
+                      <td className="py-4 px-4 text-center">
+                        <a 
+                          href={shop.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center justify-center p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-full transition-colors"
+                          title={`Перейти на сайт ${shop.name}`}
+                        >
+                          <ExternalLink size={18} />
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                  
+                  {/* Строка с нашей ценой */}
+                  <tr className="bg-primary/10 border-t-2 border-primary">
+                    <td className="py-5 px-4 font-bold text-primary flex items-center gap-2">
+                      Наше предложение
+                      <Tag size={16} className="text-primary" />
+                    </td>
+                    <td className="py-5 px-4 text-center">
+                      {product.quantity > 0 ? (
+                        <span className="text-green-500 text-xs font-bold bg-green-500/10 px-2.5 py-1.5 rounded-md shadow-sm">В наличии: {product.quantity}</span>
+                      ) : (
+                        <span className="text-amber-500 text-xs font-medium bg-amber-500/10 px-2.5 py-1.5 rounded-md">Под заказ</span>
+                      )}
+                    </td>
+                    <td className="py-5 px-4 text-right font-black text-foreground text-xl whitespace-nowrap">
+                      {formatPrice(product.our_price)}
+                    </td>
+                    <td className="py-5 px-4 text-center text-sm font-bold text-primary">
+                      Выгоднее!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         )}

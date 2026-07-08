@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200 shadow-sm">
+      <header className="sticky top-0 z-40 w-full bg-card border-b border-border shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-primary tracking-tight">Grundfos</span>
@@ -26,20 +26,20 @@ export default function Header() {
 
           <div className="flex items-center gap-6">
             <div className="hidden md:flex flex-col items-end">
-              <a href="tel:8777414141" className="text-lg font-bold text-gray-900 hover:text-primary transition-colors">
+              <a href="tel:8777414141" className="text-lg font-bold text-foreground hover:text-primary transition-colors">
                 8 777 41 41 41
               </a>
-              <span className="text-xs text-gray-500">Без выходных 09:00 - 20:00</span>
+              <span className="text-xs text-muted-foreground">Без выходных 09:00 - 20:00</span>
             </div>
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-gray-700 hover:text-primary hover:bg-gray-100 rounded-full transition-colors"
+              className="relative p-2 text-foreground hover:text-primary hover:bg-muted rounded-full transition-colors"
               aria-label="Корзина"
             >
               <ShoppingCart className="w-6 h-6" />
               {mounted && getTotalItems > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full">
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary border-2 border-card rounded-full">
                   {getTotalItems}
                 </span>
               )}

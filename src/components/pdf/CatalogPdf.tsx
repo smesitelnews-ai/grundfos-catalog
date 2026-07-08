@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottom: '2px solid #ef4444',
+    borderBottom: '2px solid #fc8b14',
     paddingBottom: 15,
     marginBottom: 20
   },
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   productArticle: {
     fontSize: 10,
-    color: '#ef4444',
+    color: '#fc8b14',
     marginBottom: 10,
     fontWeight: 'bold'
   },
@@ -129,10 +129,9 @@ export const CatalogPdf = ({ products, isSingle = false }: CatalogPdfProps) => (
           <Text style={styles.headerSubtitle}>Официальные поставки оборудования</Text>
         </View>
         <View style={styles.contactBox}>
-          <Text style={styles.contactItem}>Телефон: +7 (495) 123-45-67</Text>
-          <Text style={styles.contactItem}>Email: sales@grundfos-catalog.ru</Text>
-          <Text style={styles.contactItem}>Сайт: grundfos-catalog.vercel.app</Text>
-          <Text style={styles.contactItem}>Адрес: г. Москва, ул. Примерная, 10</Text>
+          <Text style={styles.contactItem}>Телефон: 8 777 41 41 41</Text>
+          <Text style={styles.contactItem}>Email: taqtun.ru@yandex.ru</Text>
+          <Text style={styles.contactItem}>Адрес: г. Москва, 41км МКАД ряд Б, 2/1</Text>
         </View>
       </View>
 
@@ -144,7 +143,7 @@ export const CatalogPdf = ({ products, isSingle = false }: CatalogPdfProps) => (
         <View key={index} style={styles.productCard}>
           {/* We must use absolute URLs or correct local paths. React-PDF in browser fetches via HTTP. */}
           <Image 
-            src={window.location.origin + `/images/pumps_v5/${product.article}.jpg`} 
+            src={window.location.origin + `/images/pumps/${product.article}.jpg`} 
             style={styles.productImage} 
           />
           <View style={styles.productInfo}>

@@ -42,7 +42,7 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <Link href={`/product/${product.article}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full relative group block hover:shadow-lg transition-shadow bg-white">
+    <Link href={`/product/${product.article}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full relative group block hover:shadow-lg transition-shadow bg-card">
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 items-start">
         {product.shops[0]?.price > product.our_price && (
@@ -59,6 +59,11 @@ export default function ProductCard({ product }: { product: Product }) {
       
       {/* Image container */}
       <div className="relative aspect-square bg-white p-4">
+        {/* Fire & Water Badge */}
+        <div className="absolute top-2 right-2 z-20 w-14 h-14 rounded-full bg-gradient-to-br from-[#f91155] via-[#fc8b14] to-[#005bff] flex flex-col items-center justify-center shadow-md border-2 border-white text-white rotate-[15deg] transform hover:scale-110 transition-transform">
+          <span className="text-[8px] font-black tracking-tighter uppercase leading-none mt-0.5">Grundfos</span>
+          <span className="text-[6px] font-bold uppercase leading-tight mt-0.5">Оригинал</span>
+        </div>
         <Image
           src={product.image}
           alt={product.name}
@@ -67,41 +72,41 @@ export default function ProductCard({ product }: { product: Product }) {
         />
       </div>
 
-      <div className="p-4 flex-1 flex flex-col border-t border-gray-100">
+      <div className="p-4 flex-1 flex flex-col border-t border-border">
         {/* Price */}
         <div className="mb-2">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-gray-900 tracking-tight">
+            <span className="text-2xl font-black text-foreground tracking-tight">
               {formatPrice(product.our_price)}
             </span>
           </div>
           {product.shops.length > 0 && (
-            <div className="text-sm text-gray-400 line-through decoration-red-500/50">
+            <div className="text-sm text-muted-foreground line-through decoration-red-500/50">
               {product.shops[0].price_text.replace('Ссылка', '').trim()}
             </div>
           )}
         </div>
         
         {/* Title */}
-        <h3 className="text-[15px] font-medium text-gray-800 mb-4 line-clamp-2 leading-snug group-hover:text-[#005bff] transition-colors">
+        <h3 className="text-[15px] font-medium text-foreground mb-4 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
           {product.name}
         </h3>
         
         {/* Specs snippet */}
-        <div className="mb-4 text-xs text-gray-500 space-y-1 mt-auto">
+        <div className="mb-4 text-xs text-muted-foreground space-y-1 mt-auto">
           <div className="flex justify-between">
-            <span className="text-gray-400">Артикул:</span>
-            <span className="text-gray-700 font-medium">{product.article}</span>
+            <span className="text-muted-foreground">Артикул:</span>
+            <span className="text-foreground font-medium">{product.article}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Доставка:</span>
-            <span className="text-green-600 font-medium">от 1 дня</span>
+            <span className="text-muted-foreground">Доставка:</span>
+            <span className="text-green-500 font-medium">сегодня</span>
           </div>
         </div>
         
         {/* Add to cart button */}
         <button 
-          className="w-full bg-[#005bff] hover:bg-[#004cd6] text-white font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
+          className="w-full bg-primary hover:brightness-110 text-white font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md"
           onClick={handleAddToCart}
         >
           <ShoppingCart size={18} />

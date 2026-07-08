@@ -31,7 +31,7 @@ export async function exportToExcel(products: any[], singleProduct: boolean = fa
 
   // Headers style
   worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-  worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF005bff' } }; // Ozon blue
+  worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFfc8b14' } }; // DNS orange
   worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
 
   for (let i = 0; i < products.length; i++) {
@@ -67,7 +67,7 @@ export async function exportToExcel(products: any[], singleProduct: boolean = fa
 
     // Load Image
     try {
-      const imagePath = `/images/pumps_v8/${p.article}.jpg`; // Assuming v8 is generated
+      const imagePath = `/images/pumps/${p.article}.jpg`;
       const response = await fetch(imagePath);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();

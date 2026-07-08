@@ -5,15 +5,15 @@
 }
 
 :root {
-  --background: #f5f6f8;
-  --foreground: #121212;
-  --card: #ffffff;
-  --card-foreground: #121212;
-  --primary: #005bff; /* Ozon blue */
+  --background: #121212;
+  --foreground: #ffffff;
+  --card: #1e1e1e;
+  --card-foreground: #ffffff;
+  --primary: #fc8b14; /* DNS Orange */
   --primary-foreground: #ffffff;
-  --muted: #f0f2f5;
-  --muted-foreground: #6b7280;
-  --border: #e5e7eb;
+  --muted: #2a2a2a;
+  --muted-foreground: #9ca3af;
+  --border: #333333;
 }
 
 body {
@@ -25,20 +25,20 @@ body {
 
 /* Marketplace utilities */
 .glass-panel {
-  background: #ffffff;
+  background: #1e1e1e;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .glass-card {
-  background: #ffffff;
+  background: #1e1e1e;
   border: 1px solid var(--border);
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .glass-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-  border-color: #d1d5db;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+  border-color: #fc8b14;
 }

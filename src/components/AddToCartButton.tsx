@@ -29,7 +29,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   return (
     <button 
       onClick={handleAddToCart}
-      className="w-full mb-8 bg-[#005bff] hover:bg-[#004cd6] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md text-lg"
+      className="w-full mb-8 bg-primary hover:brightness-110 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md text-lg"
     >
       <ShoppingCart size={22} /> В корзину
     </button>
