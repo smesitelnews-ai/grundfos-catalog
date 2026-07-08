@@ -13,7 +13,7 @@ export default function OzonDashboard() {
   const [error, setError] = useState<string | null>(null);
   
   const [ozonProducts, setOzonProducts] = useState<any[]>([]);
-  const [ozonStats, setOzonStats] = useState({ total: 0, active: 0, errors: 0 });
+  const [ozonStats, setOzonStats] = useState({ total: 0, inSale: 0, toSupply: 0, errors: 0 });
 
   const [isExporting, setIsExporting] = useState(false);
   const [exportMessage, setExportMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -100,10 +100,11 @@ export default function OzonDashboard() {
         }
       };
 
-      const [total, active, errorsCount] = await Promise.all([
+      const [total, inSale, toSupply, errorsCount] = await Promise.all([
         getCount("ALL"),
-        getCount("VISIBLE"),
-        getCount("STATE_FAILED")
+        getCount("IN_SALE"),
+        getCount("TO_SUPPLY"),
+        getCount("VALIDATION_STATE_FAIL")
       ]);
 
       const listResponse = await browserOzonFetch<any>('/v3/product/list', {
@@ -128,7 +129,7 @@ export default function OzonDashboard() {
       }
 
       setOzonProducts(allProducts);
-      setOzonStats({ total, active, errors: errorsCount });
+      setOzonStats({ total, inSale, toSupply, errors: errorsCount });
     } catch (error: any) {
       console.error("[Ozon fetch error]", error);
       setError(error.message || "Неизвестная ошибка");
@@ -355,18 +356,22 @@ export default function OzonDashboard() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center">
-          <div className="text-4xl font-black text-blue-600">{ozonStats.total}</div>
-          <div className="text-muted-foreground text-sm mt-1 font-medium">Товаров на Ozon</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center text-center">
+          <div className="text-3xl sm:text-4xl font-black text-blue-600">{ozonStats.total}</div>
+          <div className="text-muted-foreground text-xs sm:text-sm mt-1 font-medium">Всего на Ozon</div>
         </div>
-        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center">
-          <div className="text-4xl font-black text-emerald-600">{ozonStats.active}</div>
-          <div className="text-muted-foreground text-sm mt-1 font-medium">В продаже</div>
+        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center text-center">
+          <div className="text-3xl sm:text-4xl font-black text-emerald-600">{ozonStats.inSale}</div>
+          <div className="text-muted-foreground text-xs sm:text-sm mt-1 font-medium">В продаже</div>
         </div>
-        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center">
-          <div className="text-4xl font-black text-orange-500">{ozonStats.errors}</div>
-          <div className="text-muted-foreground text-sm mt-1 font-medium">С ошибками</div>
+        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center text-center">
+          <div className="text-3xl sm:text-4xl font-black text-indigo-500">{ozonStats.toSupply}</div>
+          <div className="text-muted-foreground text-xs sm:text-sm mt-1 font-medium">Готовы к продаже</div>
+        </div>
+        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center text-center">
+          <div className="text-3xl sm:text-4xl font-black text-orange-500">{ozonStats.errors}</div>
+          <div className="text-muted-foreground text-xs sm:text-sm mt-1 font-medium">С ошибками</div>
         </div>
       </div>
 
