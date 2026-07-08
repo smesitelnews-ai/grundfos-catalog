@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Info, Settings, Truck, Tag, Package, ShoppingCart, Clock } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import AddToCartButton from '../../../components/AddToCartButton';
 
 export async function generateStaticParams() {
   const filePath = path.join(process.cwd(), 'public', 'products.json');
@@ -99,9 +100,15 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
                 )}
               </div>
               
-              <a href="tel:8777414141" className="w-full mb-8 bg-[#005bff] hover:bg-[#004cd6] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md text-lg">
-                <ShoppingCart size={22} /> В корзину (8 777 41 41 41)
-              </a>
+              <AddToCartButton 
+                product={{
+                  article: product.article,
+                  name: product.name,
+                  our_price: product.our_price,
+                  image: displayImage,
+                  quantity: product.quantity
+                }} 
+              />
               
               {product.description && (
                 <div className="mb-8">

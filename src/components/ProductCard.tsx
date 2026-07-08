@@ -21,9 +21,24 @@ interface Product {
   image: string;
 }
 
+import { useCart } from '../store/useCart';
+
 export default function ProductCard({ product }: { product: Product }) {
+  const addItem = useCart((state) => state.addItem);
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addItem({
+      article: product.article,
+      name: product.name,
+      price: product.our_price,
+      image: product.image,
+      max_quantity: product.quantity
+    });
   };
 
   return (
@@ -85,7 +100,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Add to cart button */}
         <button 
           className="w-full bg-[#005bff] hover:bg-[#004cd6] text-white font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
-          onClick={(e) => { e.preventDefault(); window.location.href = `tel:8777414141`; }}
+          onClick={handleAddToCart}
         >
           <ShoppingCart size={18} />
           <span>В корзину</span>

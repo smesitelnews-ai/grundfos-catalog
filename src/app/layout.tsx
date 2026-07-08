@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: "Каталог насосов Grundfos с парсером минимальных цен",
 };
 
+import Header from "../components/Header";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -17,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable}`}>
       <body className="antialiased min-h-screen">
+        <Header />
         {children}
       </body>
     </html>
