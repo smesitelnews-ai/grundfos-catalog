@@ -144,7 +144,7 @@ export const CatalogPdf = ({ products, isSingle = false }: CatalogPdfProps) => (
         <View key={index} style={styles.productCard}>
           {/* We must use absolute URLs or correct local paths. React-PDF in browser fetches via HTTP. */}
           <Image 
-            src={window.location.origin + `/images/pumps_v4/${product.article}.jpg`} 
+            src={window.location.origin + `/images/pumps_v5/${product.article}.jpg`} 
             style={styles.productImage} 
           />
           <View style={styles.productInfo}>

@@ -49,7 +49,7 @@ export async function exportToExcel(products: any[], singleProduct: boolean = fa
 
     // Загружаем картинку
     try {
-      const imagePath = `/images/pumps_v4/${p.article}.jpg`;
+      const imagePath = `/images/pumps_v5/${p.article}.jpg`;
       // Выполняем fetch к локальному изображению
       const response = await fetch(imagePath);
       if (response.ok) {

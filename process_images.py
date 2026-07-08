@@ -6,7 +6,7 @@ from rembg import remove
 # Paths
 PRODUCTS_FILE = 'public/products.json'
 INPUT_DIR = 'public/images/pumps'
-OUTPUT_DIR = 'public/images/pumps_v4'
+OUTPUT_DIR = 'public/images/pumps_v5'
 BG_IMAGE_PATH = r'C:\Users\ROM\.gemini\antigravity\brain\50deb5ab-767b-4b53-a433-153d870a8fef\fire_water_bg_1783467792465.png'
 BADGE_PATH = 'public/images/badge.png'
 FONT_BOLD = 'public/fonts/Roboto-Bold.ttf'
