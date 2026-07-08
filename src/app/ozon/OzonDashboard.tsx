@@ -320,7 +320,7 @@ export default function OzonDashboard() {
               </thead>
               <tbody className="divide-y divide-border">
                 {ozonProducts.map((product) => (
-                  <OzonProductRow key={product.product_id} product={product} clientId={clientId} apiKey={apiKey} />
+                  <OzonProductRow key={product.id} product={product} clientId={clientId} apiKey={apiKey} />
                 ))}
               </tbody>
             </table>

@@ -39,7 +39,7 @@ export function OzonProductRow({ product, clientId, apiKey }: OzonProductRowProp
         const res = await fetch('/api/ozon/product-attributes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ clientId, apiKey, productId: product.product_id })
+          body: JSON.stringify({ clientId, apiKey, productId: product.id })
         });
         const data = await res.json();
         if (data.success) {
@@ -72,7 +72,7 @@ export function OzonProductRow({ product, clientId, apiKey }: OzonProductRowProp
             <span className="bg-gray-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-[11px] uppercase tracking-wider font-semibold">
               Арт: {product.offer_id}
             </span>
-            <span className="text-[11px]">Ozon ID: {product.product_id}</span>
+            <span className="text-[11px]">Ozon ID: {product.id}</span>
           </div>
         </td>
         <td className="px-6 py-3 font-bold whitespace-nowrap">
