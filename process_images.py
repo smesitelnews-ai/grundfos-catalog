@@ -6,7 +6,7 @@ from rembg import remove
 # Paths
 PRODUCTS_FILE = 'public/products.json'
 INPUT_DIR = 'public/images/pumps'
-OUTPUT_DIR = 'public/images/pumps_v2'
+OUTPUT_DIR = 'public/images/pumps_v4'
 BG_IMAGE_PATH = r'C:\Users\ROM\.gemini\antigravity\brain\50deb5ab-767b-4b53-a433-153d870a8fef\fire_water_bg_1783467792465.png'
 BADGE_PATH = 'public/images/badge.png'
 FONT_BOLD = 'public/fonts/Roboto-Bold.ttf'
@@ -93,11 +93,7 @@ for p in products:
     
     draw.text((40, 1070), p['name'], font=font_title, fill='#FFFFFF')
     
-    # Price
-    price_str = f"{p['our_price']:,} руб.".replace(',', ' ')
-    price_bbox = draw.textbbox((0, 0), price_str, font=font_price)
-    pw = price_bbox[2] - price_bbox[0]
-    draw.text((1080 - pw - 40, 1060), price_str, font=font_price, fill='#EF4444')
+    # Price removed as requested
     
     specs = p.get('specs', {})
     spec_keys = list(specs.keys())
