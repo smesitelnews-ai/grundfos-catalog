@@ -44,9 +44,10 @@ export async function POST(request: Request) {
       try {
         const infoResponse = await ozonFetch<any>('/v3/product/info/list', {
           method: 'POST', clientId, apiKey,
-          body: { product_id: productIds }
+          body: { product_id: productIds, offer_id: [], sku: [] }
         });
-        allProducts = infoResponse?.result?.items || [];
+        // v3/product/info/list возвращает массив items в корне ответа, а не внутри result
+        allProducts = infoResponse?.items || infoResponse?.result?.items || [];
       } catch (error) {
         console.error(`[Ozon] Ошибка при загрузке деталей товаров:`, error);
       }
