@@ -60,6 +60,18 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
               fill
               className="object-contain p-12 drop-shadow-2xl"
             />
+            {product.market_image && (
+              <div className="absolute bottom-6 left-6 right-6 flex justify-center z-20">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 flex gap-4">
+                  <div className="w-20 h-20 relative rounded-xl overflow-hidden cursor-pointer border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                    <Image src={displayImage} alt="Main" fill className="object-cover" />
+                  </div>
+                  <a href={product.market_image} target="_blank" rel="noreferrer" className="w-20 h-20 relative rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-white/50 transition-all opacity-80 hover:opacity-100" title="Фото из Яндекс Маркета">
+                    <Image src={product.market_image} alt="Market" fill className="object-cover bg-white" />
+                  </a>
+                </div>
+              </div>
+            )}
             {/* Значок оригинальности */}
             <div className="absolute top-8 right-8 w-24 h-24 drop-shadow-2xl z-10 opacity-90 hover:opacity-100 hover:rotate-12 hover:scale-110 transition-all cursor-pointer" title="Оригинальный товар">
               <Image
