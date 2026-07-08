@@ -6,23 +6,24 @@ const OZON_API_BASE = 'https://api-seller.ozon.ru';
 interface OzonRequestOptions {
   method?: 'GET' | 'POST';
   body?: Record<string, unknown>;
+  clientId?: string;
+  apiKey?: string;
 }
 
 /**
- * Выполняет запрос к Ozon Seller API с автоматической авторизацией.
- * Заголовки Client-Id и Api-Key берутся из переменных окружения.
+ * Выполняет запрос к Ozon Seller API.
+ * Заголовки Client-Id и Api-Key могут быть переданы явно или браться из переменных окружения.
  */
 export async function ozonFetch<T = unknown>(
   endpoint: string,
   options: OzonRequestOptions = {}
 ): Promise<T> {
-  const clientId = process.env.OZON_CLIENT_ID;
-  const apiKey = process.env.OZON_API_KEY;
+  const clientId = options.clientId || process.env.OZON_CLIENT_ID;
+  const apiKey = options.apiKey || process.env.OZON_API_KEY;
 
   if (!clientId || !apiKey) {
     throw new Error(
-      'Не заданы переменные окружения OZON_CLIENT_ID и OZON_API_KEY. ' +
-      'Добавьте их в файл .env.local'
+      'Не заданы ключи авторизации Client-Id и Api-Key.'
     );
   }
 

@@ -5,7 +5,7 @@ import { mapProductToOzonAttributes, generateEan13 } from '@/lib/ozon/attributeM
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { products, vat = "0.2" } = body;
+    const { products, vat = "0.2", clientId, apiKey } = body;
 
     if (!Array.isArray(products) || products.length === 0) {
       return NextResponse.json({ success: false, error: 'Массив товаров пуст или не передан' }, { status: 400 });
@@ -33,9 +33,6 @@ export async function POST(request: Request) {
       const weight = 5;
 
       // Формируем URL изображения (должен быть абсолютным)
-      // В реальном проекте здесь должен быть боевой URL, например https://mysite.com/images/...
-      // Если мы запускаем локально, картинки с localhost Ozon не скачает. 
-      // Поэтому для демо ставим заглушку, либо передаем URL, если он есть.
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grundfos-catalog-demo.vercel.app";
       const primaryImage = product.image ? (product.image.startsWith('http') ? product.image : `${baseUrl}${product.image}`) : undefined;
 
@@ -66,7 +63,9 @@ export async function POST(request: Request) {
     // Ozon принимает до 100 товаров в одном запросе
     const response = await ozonFetch<any>('/v3/product/import', {
       method: 'POST',
-      body: { items }
+      body: { items },
+      clientId,
+      apiKey
     });
 
     return NextResponse.json({
