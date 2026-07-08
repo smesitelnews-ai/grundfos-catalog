@@ -1,13 +1,10 @@
-import fs from 'fs';
-import path from 'path';
 import CatalogClient from '@/components/CatalogClient';
 import ExportButtons from '@/components/ExportButtons';
 import Image from 'next/image';
+import productsData from '../../public/products.json';
 
 export default async function Home() {
-  const filePath = path.join(process.cwd(), 'public', 'products.json');
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  const products = JSON.parse(fileContents);
+  const products = productsData;
 
   // Обогащаем товары реальными путями к картинкам
   const enrichedProducts = products.map((product: any) => {
