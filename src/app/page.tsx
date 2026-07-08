@@ -15,7 +15,7 @@ export default async function Home() {
     const hasRealImage = fs.existsSync(localPath);
     return {
       ...product,
-      image: hasRealImage ? imagePath : '/images/grundfos_pump.png'
+      image: hasRealImage ? imagePath + '?v=2' : '/images/grundfos_pump.png'
     };
   });
 
