@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${inter.variable}`}>
+    <html lang="ru" className={`${roboto.variable}`}>
       <body className="antialiased min-h-screen">
         <Header />
         {children}
