@@ -9,8 +9,10 @@ export default function OzonDashboard() {
   const [apiKey, setApiKey] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [ozonProducts, setOzonProducts] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  
+  const [ozonProducts, setOzonProducts] = useState<any[]>([]);
+  const [ozonStats, setOzonStats] = useState({ total: 0, active: 0, errors: 0 });
 
   const [isExporting, setIsExporting] = useState(false);
   const [exportMessage, setExportMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -90,7 +92,10 @@ export default function OzonDashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setOzonProducts(data.products);
+        setOzonProducts(data.products || []);
+        if (data.stats) {
+          setOzonStats(data.stats);
+        }
       } else {
         setError(data.error || 'Ошибка загрузки товаров');
         if (data.error?.includes('401') || data.error?.includes('403')) {
@@ -263,15 +268,15 @@ export default function OzonDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center">
-          <div className="text-4xl font-black text-blue-600">{ozonProducts.length}</div>
+          <div className="text-4xl font-black text-blue-600">{ozonStats.total}</div>
           <div className="text-muted-foreground text-sm mt-1 font-medium">Товаров на Ozon</div>
         </div>
         <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center">
-          <div className="text-4xl font-black text-emerald-600">{ozonProducts.filter(p => p.status?.state_name?.includes('Готов') || p.status?.state_name?.includes('Продается')).length || 0}</div>
+          <div className="text-4xl font-black text-emerald-600">{ozonStats.active}</div>
           <div className="text-muted-foreground text-sm mt-1 font-medium">В продаже</div>
         </div>
         <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm flex flex-col justify-center items-center">
-          <div className="text-4xl font-black text-orange-500">{ozonProducts.filter(p => p.status?.state_name?.includes('Ошиб')).length || 0}</div>
+          <div className="text-4xl font-black text-orange-500">{ozonStats.errors}</div>
           <div className="text-muted-foreground text-sm mt-1 font-medium">С ошибками</div>
         </div>
       </div>
@@ -286,7 +291,7 @@ export default function OzonDashboard() {
           <div className="p-12 flex justify-center text-blue-500">
             <RefreshCw className="animate-spin" size={32} />
           </div>
-        ) : ozonProducts.length === 0 ? (
+        ) : ozonStats.total === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
             <Package size={48} className="mx-auto mb-4 opacity-20" />
             <p>Нет загруженных товаров на Ozon.</p>
