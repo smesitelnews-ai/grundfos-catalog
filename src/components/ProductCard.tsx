@@ -48,15 +48,6 @@ export default function ProductCard({ product }: { product: Product }) {
           fill
           className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
         />
-        {/* Значок оригинальности */}
-        <div className="absolute top-2 right-2 w-12 h-12 z-10 opacity-90 group-hover:opacity-100 transition-opacity">
-          <Image
-            src="/images/badge.png"
-            alt="100% Original"
-            fill
-            className="object-contain"
-          />
-        </div>
       </div>
 
       <div className="p-4 flex-1 flex flex-col border-t border-gray-100">

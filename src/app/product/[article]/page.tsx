@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
     notFound();
   }
 
-  const imagePath = `/images/pumps_v6/${product.article}.jpg`;
+  const imagePath = `/images/pumps_v7/${product.article}.jpg`;
   const localPath = path.join(process.cwd(), 'public', imagePath);
   const hasRealImage = fs.existsSync(localPath);
   const displayImage = hasRealImage ? imagePath : '/images/grundfos_pump.png';
@@ -64,16 +64,7 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
                 fill
                 className="object-contain p-12"
               />
-              {/* Значок оригинальности */}
-              <div className="absolute top-6 right-6 w-16 h-16 z-10">
-                <Image
-                  src="/images/badge.png"
-                  alt="100% Original"
-                  fill
-                  className="object-contain"
-                />
               </div>
-            </div>
 
             {/* Правая колонка: Основная информация */}
             <div className="p-8 lg:p-10 flex flex-col">

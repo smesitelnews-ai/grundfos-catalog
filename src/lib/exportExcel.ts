@@ -67,7 +67,7 @@ export async function exportToExcel(products: any[], singleProduct: boolean = fa
 
     // Load Image
     try {
-      const imagePath = `/images/pumps_v6/${p.article}.jpg`; // Assuming v6 is generated
+      const imagePath = `/images/pumps_v7/${p.article}.jpg`; // Assuming v7 is generated
       const response = await fetch(imagePath);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();
