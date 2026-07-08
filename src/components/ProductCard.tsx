@@ -45,9 +45,11 @@ export default function ProductCard({ product }: { product: Product }) {
     <Link href={`/product/${product.article}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full relative group block hover:shadow-lg transition-shadow bg-white">
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 items-start">
-        <span className="bg-[#f91155] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
-          -{Math.round((product.shops[0]?.price - product.our_price) / product.shops[0]?.price * 100 || 10)}%
-        </span>
+        {product.shops[0]?.price > product.our_price && (
+          <span className="bg-[#f91155] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
+            -{Math.round((product.shops[0].price - product.our_price) / product.shops[0].price * 100)}%
+          </span>
+        )}
         {product.quantity > 0 && (
           <span className="bg-[#00b14f] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
             В наличии

@@ -50,9 +50,11 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
             {/* Левая колонка: Изображение */}
             <div className="p-8 flex flex-col items-center justify-center relative min-h-[400px] border-b lg:border-b-0 lg:border-r border-gray-100 bg-white">
               <div className="absolute top-6 left-6 z-10 flex flex-col gap-2">
-                <span className="bg-[#f91155] text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
-                  Скидка {Math.round((product.shops[0]?.price - product.our_price) / product.shops[0]?.price * 100 || 10)}%
-                </span>
+                {product.shops[0]?.price > product.our_price && (
+                  <span className="bg-[#f91155] text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
+                    Скидка {Math.round((product.shops[0].price - product.our_price) / product.shops[0].price * 100)}%
+                  </span>
+                )}
                 {product.quantity > 0 && (
                   <span className="bg-[#00b14f] text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5">
                     <Package size={16} /> В наличии: {product.quantity} шт.

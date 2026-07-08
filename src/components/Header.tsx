@@ -22,7 +22,6 @@ export default function Header() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-primary tracking-tight">Grundfos</span>
-            <span className="text-sm font-medium text-gray-500 hidden sm:inline-block">Официальный дилер</span>
           </Link>
 
           <div className="flex items-center gap-6">
