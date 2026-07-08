@@ -16,7 +16,8 @@ export function OzonProductRow({ product, clientId, apiKey }: OzonProductRowProp
 
   // Статусы и ошибки
   const statusName = product.statuses?.state_name || 'Неизвестно';
-  const isError = product.statuses?.state_name?.includes('Ошиб') || product.errors?.length > 0;
+  const errorsArray = Array.isArray(product.errors) ? product.errors : [];
+  const isError = product.statuses?.state_name?.includes('Ошиб') || errorsArray.length > 0;
   const isOk = product.statuses?.state_name?.includes('Готов') || product.statuses?.state_name?.includes('Продается') || product.statuses?.state_name?.includes('Создан');
 
   const statusColor = isOk
@@ -26,8 +27,10 @@ export function OzonProductRow({ product, clientId, apiKey }: OzonProductRowProp
       : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800';
 
   // Остатки (парсим из stocks, где type: 'fbo' или 'fbs')
-  const fboStock = product.stocks?.find((s: any) => s.type === 'fbo')?.present || 0;
-  const fbsStock = product.stocks?.find((s: any) => s.type === 'fbs')?.present || 0;
+  const stocksArray = Array.isArray(product.stocks) ? product.stocks : [];
+  const fboStock = stocksArray.find((s: any) => s.type === 'fbo')?.present || 0;
+  const fbsStock = stocksArray.find((s: any) => s.type === 'fbs')?.present || 0;
+
 
   const toggleExpand = async () => {
     if (!isExpanded && !attributes) {
@@ -88,17 +91,17 @@ export function OzonProductRow({ product, clientId, apiKey }: OzonProductRowProp
             </span>
             
             {/* Ошибки Ozon (выводим красным) */}
-            {product.errors && product.errors.length > 0 && (
+            {errorsArray.length > 0 && (
               <div className="flex items-start gap-1 text-red-600 dark:text-red-400 text-[11px] leading-tight max-w-[200px]">
                 <AlertTriangle size={12} className="flex-shrink-0 mt-0.5" />
-                <span className="line-clamp-2" title={product.errors.map((e:any) => e.error_reason || e.state_name || e.code).join(', ')}>
-                  {product.errors[0]?.error_reason || product.errors[0]?.state_name || 'Ошибка модерации'}
+                <span className="line-clamp-2" title={errorsArray.map((e:any) => e?.error_reason || e?.state_name || e?.code).join(', ')}>
+                  {errorsArray[0]?.error_reason || errorsArray[0]?.state_name || 'Ошибка модерации'}
                 </span>
               </div>
             )}
             
             {/* Если статус "Не продается" и нет явной ошибки в массиве errors, показываем state_description */}
-            {product.statuses?.state_name === 'Не продается' && (!product.errors || product.errors.length === 0) && (
+            {product.statuses?.state_name === 'Не продается' && errorsArray.length === 0 && (
                <div className="flex items-start gap-1 text-orange-600 dark:text-orange-400 text-[11px] leading-tight max-w-[200px]">
                <AlertCircle size={12} className="flex-shrink-0 mt-0.5" />
                <span className="line-clamp-2" title={product.statuses?.state_description}>
