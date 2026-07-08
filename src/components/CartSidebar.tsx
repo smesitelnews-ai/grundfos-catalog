@@ -42,7 +42,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
     try {
       // Отправка через Web3Forms
       // Для работы нужен ACCESS_KEY с сайта web3forms.com
-      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || 'ВАШ_КЛЮЧ_ЗДЕСЬ';
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || '04a545bf-c3e6-4906-bb43-7c884736f457';
       
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
