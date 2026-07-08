@@ -11,10 +11,10 @@ export default async function Home() {
 
   // Обогащаем товары реальными путями к картинкам
   const enrichedProducts = products.map((product: any) => {
-    const imagePath = `/images/pumps_v9/${product.article}.jpg`;
+    const promoImage = `/images/pumps_v9/${product.article}.jpg`;
     return {
       ...product,
-      image: imagePath
+      promo_image: promoImage
     };
   });
 

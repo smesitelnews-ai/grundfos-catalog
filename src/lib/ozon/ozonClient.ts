@@ -28,22 +28,39 @@ export async function ozonFetch<T = unknown>(
 
   const { method = 'POST', body } = options;
 
-  const response = await fetch(`${OZON_API_BASE}${endpoint}`, {
-    method,
-    headers: {
-      'Client-Id': clientId,
-      'Api-Key': apiKey,
-      'Content-Type': 'application/json',
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  const url = `${OZON_API_BASE}${endpoint}`;
+  console.log(`[OzonAPI] ${method} ${url}`);
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `Ozon API ошибка ${response.status}: ${errorText}`
-    );
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Client-Id': clientId,
+        'Api-Key': apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[OzonAPI] Ошибка ${response.status}:`, errorText);
+      throw new Error(
+        `Ozon API ошибка ${response.status}: ${errorText}`
+      );
+    }
+
+    const data = await response.json();
+    console.log(`[OzonAPI] Успех: ${endpoint}`);
+    return data as T;
+  } catch (error: unknown) {
+    if (error instanceof TypeError && (error as any).cause) {
+      // Сетевая ошибка (DNS, SSL, timeout)
+      console.error(`[OzonAPI] Сетевая ошибка:`, (error as any).cause);
+      throw new Error(
+        `Сетевая ошибка при подключении к Ozon API: ${(error as any).cause?.message || error.message}`
+      );
+    }
+    throw error;
   }
-
-  return response.json() as Promise<T>;
 }

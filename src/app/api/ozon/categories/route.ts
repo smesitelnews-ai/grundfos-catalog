@@ -52,8 +52,7 @@ export async function GET() {
       for (const cat of categories) {
         const currentPath = path ? `${path} → ${cat.category_name}` : cat.category_name;
 
-        // Проверяем, содержит ли название одно из ключевых слов
-        const nameLower = cat.category_name.toLowerCase();
+        const nameLower = (cat.category_name || '').toLowerCase();
         const matches = pumpKeywords.some(kw => nameLower.includes(kw));
 
         if (matches && !cat.disabled) {
