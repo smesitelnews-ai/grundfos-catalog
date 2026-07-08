@@ -19,73 +19,81 @@ export async function exportToExcel(products: any[], singleProduct: boolean = fa
     width: 25,
   }));
 
-  // Define columns
-  worksheet.columns = [
-    { header: 'Артикул', key: 'article', width: 15 },
-    { header: 'Фото', key: 'image', width: 25 },
-    { header: 'Название', key: 'name', width: 40 },
-    { header: 'Цена', key: 'our_price', width: 15 },
-    { header: 'Наличие', key: 'quantity', width: 15 },
-    ...specColumns
-  ];
-
-  // Headers style
-  worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-  worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFfc8b14' } }; // DNS orange
-  worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
-
-  for (let i = 0; i < products.length; i++) {
-    const p = products[i];
-    
-    const rowData: any = {
-      article: p.article,
-      name: p.name,
-      our_price: p.our_price + ' ₽',
-      quantity: p.quantity > 0 ? `${p.quantity} шт.` : 'Под заказ',
-    };
-
-    if (p.specs) {
-      Object.entries(p.specs).forEach(([k, v]) => {
-        rowData[k] = v;
-      });
-    }
-
-    const row = worksheet.addRow(rowData);
-
-    // Image row height
-    row.height = 100;
-    
-    row.getCell('name').alignment = { vertical: 'middle', horizontal: 'left', wrapText: true };
-    row.getCell('article').alignment = { vertical: 'middle', horizontal: 'center' };
-    row.getCell('our_price').alignment = { vertical: 'middle', horizontal: 'center' };
-    row.getCell('quantity').alignment = { vertical: 'middle', horizontal: 'center' };
-    
-    // Style specs cells
-    specColumns.forEach((col, idx) => {
-      row.getCell(6 + idx).alignment = { vertical: 'middle', horizontal: 'left', wrapText: true };
-    });
-
-    // Load Image
-    try {
+    // Define columns
+    worksheet.columns = [
+      { header: 'Артикул', key: 'article', width: 15 },
+      { header: 'Фото', key: 'image', width: 18 },
+      { header: 'Название', key: 'name', width: 40 },
+      { header: 'Цена', key: 'our_price', width: 15 },
+      { header: 'Наличие', key: 'quantity', width: 15 },
+      { header: 'Ссылка на фото', key: 'image_link', width: 45 },
+      ...specColumns
+    ];
+  
+    // Headers style
+    worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFfc8b14' } }; // DNS orange
+    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+  
+    for (let i = 0; i < products.length; i++) {
+      const p = products[i];
       const imagePath = `/images/pumps_v9/${p.article}.jpg`;
-      const response = await fetch(imagePath);
-      if (response.ok) {
-        const arrayBuffer = await response.arrayBuffer();
-        const imageId = workbook.addImage({
-          buffer: arrayBuffer,
-          extension: 'jpeg',
+      const fullImageUrl = `https://grundfos-catalog.vercel.app${imagePath}`;
+      
+      const rowData: any = {
+        article: p.article,
+        name: p.name,
+        our_price: p.our_price + ' ₽',
+        quantity: p.quantity > 0 ? `${p.quantity} шт.` : 'Под заказ',
+        image_link: fullImageUrl,
+      };
+  
+      if (p.specs) {
+        Object.entries(p.specs).forEach(([k, v]) => {
+          rowData[k] = v;
         });
-        
-        worksheet.addImage(imageId, {
-          tl: { col: 1.1, row: row.number - 1 + 0.1 },
-          br: { col: 1.9, row: row.number - 0.1 },
-          editAs: 'oneCell'
-        } as any);
       }
-    } catch (e) {
-      console.warn("Could not load image for", p.article, e);
+  
+      const row = worksheet.addRow(rowData);
+  
+      // Image row height
+      row.height = 105;
+      
+      row.getCell('name').alignment = { vertical: 'middle', horizontal: 'left', wrapText: true };
+      row.getCell('article').alignment = { vertical: 'middle', horizontal: 'center' };
+      row.getCell('our_price').alignment = { vertical: 'middle', horizontal: 'center' };
+      row.getCell('quantity').alignment = { vertical: 'middle', horizontal: 'center' };
+      row.getCell('image_link').alignment = { vertical: 'middle', horizontal: 'left' };
+      
+      // Make the link clickable
+      row.getCell('image_link').value = { text: fullImageUrl, hyperlink: fullImageUrl };
+      row.getCell('image_link').font = { color: { argb: 'FF0563C1' }, underline: true };
+      
+      // Style specs cells
+      specColumns.forEach((col, idx) => {
+        row.getCell(7 + idx).alignment = { vertical: 'middle', horizontal: 'left', wrapText: true };
+      });
+  
+      // Load Image
+      try {
+        const response = await fetch(imagePath);
+        if (response.ok) {
+          const arrayBuffer = await response.arrayBuffer();
+          const imageId = workbook.addImage({
+            buffer: arrayBuffer,
+            extension: 'jpeg',
+          });
+          
+          worksheet.addImage(imageId, {
+            tl: { col: 1.1, row: row.number - 1 + 0.1 },
+            ext: { width: 96, height: 120 }, // 1080x1350 aspect ratio 0.8 -> 96x120 pixels
+            editAs: 'oneCell'
+          } as any);
+        }
+      } catch (e) {
+        console.warn("Could not load image for", p.article, e);
+      }
     }
-  }
 
   // Generate file
   const buffer = await workbook.xlsx.writeBuffer();
