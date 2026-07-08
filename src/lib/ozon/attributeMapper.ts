@@ -16,93 +16,75 @@ export function generateEan13(article: string): string {
   return base + checkDigit;
 }
 
-export function mapProductToOzonAttributes(product: any, categoryName: string) {
+export function mapProductToOzonAttributes(product: any, categoryName: string, settings?: any) {
   const attributes = [];
 
   // 1. Бренд (ID: 85, словарь Ozon: 28732849)
-  // Ozon требует передавать value или dictionary_value_id.
-  // Мы попробуем передать value как строку "Grundfos", так как dictionary_value_id нужно искать через API словарей.
   attributes.push({
     id: 85,
-    values: [
-      {
-        dictionary_value_id: 28732849, // Если мы точно знаем ID "Grundfos" в Ozon (это пример, возможно другой)
-        // Для безопасности лучше использовать просто value, Ozon часто принимает текстом
-        value: "Grundfos" 
-      }
-    ]
+    values: [{ value: "Grundfos" }]
   });
 
   // 2. Тип (ID: 8229)
   attributes.push({
     id: 8229,
-    values: [
-      {
-        value: categoryName || "Циркуляционный насос"
-      }
-    ]
+    values: [{ value: categoryName || "Циркуляционный насос" }]
   });
 
   // 3. Название модели (ID: 9048)
-  attributes.push({
-    id: 9048,
-    values: [
-      {
-        value: product.name
-      }
-    ]
-  });
+  if (!settings || settings.exportDescription) {
+    attributes.push({
+      id: 9048,
+      values: [{ value: product.name }]
+    });
+  }
 
   // 4. ТН ВЭД коды ЕАЭС (ID: 22232)
-  // 8413703000 - пример кода для насосов циркуляционных
   attributes.push({
     id: 22232,
-    values: [
-      {
-        value: "8413703000"
-      }
-    ]
+    values: [{ value: "8413703000" }]
   });
 
   // 5. Нужен код маркировки (ID: 23536)
   attributes.push({
     id: 23536,
-    values: [
-      {
-        value: "false"
-      }
-    ]
+    values: [{ value: "false" }]
   });
 
   // Дополнительные атрибуты, если они есть
-  const specs = product.specs || {};
+  if (!settings || settings.exportSpecs) {
+    const specs = product.specs || {};
+    const specsList = settings?.specsList || {};
 
-  // Производительность, л/мин (ID: 7454)
-  if (specs["Максимальный расход"]) {
-    // Попытка извлечь число
-    const match = specs["Максимальный расход"].match(/[\d.,]+/);
-    if (match) {
-      // Преобразуем м3/ч в л/мин примерно (1 м3/ч = 16.6 л/мин)
-      const m3h = parseFloat(match[0].replace(',', '.'));
-      const lmin = Math.round(m3h * 16.6667);
-      if (lmin > 0) {
+    // Производительность, л/мин (ID: 7454)
+    // Смотрим, разрешена ли выгрузка "Максимальный расход"
+    if (specs["Максимальный расход"] && specsList["Максимальный расход"] !== false) {
+      const match = specs["Максимальный расход"].match(/[\d.,]+/);
+      if (match) {
+        const m3h = parseFloat(match[0].replace(',', '.'));
+        const lmin = Math.round(m3h * 16.6667);
+        if (lmin > 0) {
+          attributes.push({
+            id: 7454,
+            values: [{ value: String(lmin) }]
+          });
+        }
+      }
+    }
+
+    // Монтажная длина, мм (ID: 20980)
+    if (specs["Монтажная длина"] && specsList["Монтажная длина"] !== false) {
+      const match = specs["Монтажная длина"].match(/[\d.,]+/);
+      if (match) {
         attributes.push({
-          id: 7454,
-          values: [{ value: String(lmin) }]
+          id: 20980,
+          values: [{ value: match[0] }]
         });
       }
     }
-  }
-
-  // Монтажная длина, мм (ID: 20980)
-  if (specs["Монтажная длина"]) {
-    const match = specs["Монтажная длина"].match(/[\d.,]+/);
-    if (match) {
-      attributes.push({
-        id: 20980,
-        values: [{ value: match[0] }]
-      });
-    }
+    
+    // В будущем здесь можно добавить обработку других характеристик (Тип насоса, Рабочее давление и т.д.)
+    // привязывая их к соответствующим ID атрибутов в Ozon
   }
 
   return attributes;

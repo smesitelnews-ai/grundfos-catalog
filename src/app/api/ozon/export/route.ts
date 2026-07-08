@@ -5,11 +5,22 @@ import { mapProductToOzonAttributes, generateEan13 } from '@/lib/ozon/attributeM
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { products, vat = "0.2", clientId, apiKey } = body;
+    const { products, vat = "0.2", clientId, apiKey, settings } = body;
 
     if (!Array.isArray(products) || products.length === 0) {
       return NextResponse.json({ success: false, error: 'Массив товаров пуст или не передан' }, { status: 400 });
     }
+
+    const defaultSettings = {
+      exportDescription: true,
+      exportImages: true,
+      exportPrice: true,
+      exportBarcode: true,
+      exportSpecs: true,
+      specsList: {}
+    };
+
+    const s = settings || defaultSettings;
 
     // Подготовка товаров к отправке на Ozon
     const items = products.map((product: any) => {
@@ -36,12 +47,10 @@ export async function POST(request: Request) {
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grundfos-catalog-demo.vercel.app";
       const primaryImage = product.image ? (product.image.startsWith('http') ? product.image : `${baseUrl}${product.image}`) : undefined;
 
-      return {
+      const item: any = {
         description_category_id: 83625738, // Насосы для дачи
         name: `Насос ${product.name}`,
         offer_id: product.article,
-        barcode: product.barcode || generateEan13(product.article),
-        price: String(product.our_price || product.min_price || 10000),
         vat: vat,
         currency_code: "RUB",
         depth,
@@ -50,11 +59,29 @@ export async function POST(request: Request) {
         dimension_unit: "cm",
         weight,
         weight_unit: "kg",
-        primary_image: primaryImage,
-        images: primaryImage ? [primaryImage] : [],
-        attributes: mapProductToOzonAttributes(product, ozonCategoryName),
+        attributes: mapProductToOzonAttributes(product, ozonCategoryName, s),
         complex_attributes: []
       };
+
+      if (s.exportPrice) {
+        item.price = String(product.our_price || product.min_price || 10000);
+      } else {
+        item.price = "0"; // Ozon might require a price, but if disabled we can send 0 or skip it if allowed
+      }
+
+      if (s.exportBarcode) {
+        item.barcode = product.barcode || generateEan13(product.article);
+      }
+
+      if (s.exportImages && primaryImage) {
+        item.primary_image = primaryImage;
+        item.images = [primaryImage];
+      } else {
+        item.primary_image = "";
+        item.images = [];
+      }
+
+      return item;
     });
 
     // Отправляем на Ozon
