@@ -5,15 +5,15 @@
 }
 
 :root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-  --primary: #ef4444; /* Grundfos red */
+  --background: #f5f6f8;
+  --foreground: #121212;
+  --card: #ffffff;
+  --card-foreground: #121212;
+  --primary: #005bff; /* Ozon blue */
   --primary-foreground: #ffffff;
-  --muted: #334155;
-  --muted-foreground: #94a3b8;
-  --border: #334155;
+  --muted: #f0f2f5;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
 }
 
 body {
@@ -21,29 +21,24 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
-  background-image: radial-gradient(circle at top, rgba(239, 68, 68, 0.15) 0%, transparent 40%),
-                    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
-  background-attachment: fixed;
 }
 
-/* Glassmorphism utilities */
+/* Marketplace utilities */
 .glass-panel {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .glass-card {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px -10px rgba(239, 68, 68, 0.3);
-  border-color: rgba(239, 68, 68, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
 }

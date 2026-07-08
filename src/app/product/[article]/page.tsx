@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
     notFound();
   }
 
-  const imagePath = `/images/pumps_v5/${product.article}.jpg`;
+  const imagePath = `/images/pumps_v6/${product.article}.jpg`;
   const localPath = path.join(process.cwd(), 'public', imagePath);
   const hasRealImage = fs.existsSync(localPath);
   const displayImage = hasRealImage ? imagePath : '/images/grundfos_pump.png';
@@ -37,142 +37,102 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
   };
 
   return (
-    <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+    <main className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#f5f6f8]">
       <div className="max-w-6xl mx-auto">
-        <Link href="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors">
+        <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-[#005bff] mb-8 transition-colors font-medium">
           <ArrowLeft size={20} />
           <span>Вернуться в каталог</span>
         </Link>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Левая колонка: Изображение */}
-          <div className="glass-panel rounded-3xl p-8 flex flex-col items-center justify-center relative min-h-[400px]">
-            <div className="absolute top-6 left-6 z-10">
-              {product.quantity > 0 && (
-                <span className="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-sm font-bold px-4 py-2 rounded-full flex items-center gap-2">
-                  <Package size={16} /> В наличии: {product.quantity} шт.
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Левая колонка: Изображение */}
+            <div className="p-8 flex flex-col items-center justify-center relative min-h-[400px] border-b lg:border-b-0 lg:border-r border-gray-100 bg-white">
+              <div className="absolute top-6 left-6 z-10 flex flex-col gap-2">
+                <span className="bg-[#f91155] text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
+                  Скидка {Math.round((product.shops[0]?.price - product.our_price) / product.shops[0]?.price * 100 || 10)}%
                 </span>
-              )}
+                {product.quantity > 0 && (
+                  <span className="bg-[#00b14f] text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5">
+                    <Package size={16} /> В наличии: {product.quantity} шт.
+                  </span>
+                )}
+              </div>
+              <Image 
+                src={displayImage} 
+                alt={product.name} 
+                fill
+                className="object-contain p-12"
+              />
+              {/* Значок оригинальности */}
+              <div className="absolute top-6 right-6 w-16 h-16 z-10">
+                <Image
+                  src="/images/badge.png"
+                  alt="100% Original"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </div>
-            <Image 
-              src={displayImage} 
-              alt={product.name} 
-              fill
-              className="object-contain p-12 drop-shadow-2xl"
-            />
-            {product.market_image && (
-              <div className="absolute bottom-6 left-6 right-6 flex justify-center z-20">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 flex gap-4">
-                  <div className="w-20 h-20 relative rounded-xl overflow-hidden cursor-pointer border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
-                    <Image src={displayImage} alt="Main" fill className="object-cover" />
-                  </div>
-                  <a href={product.market_image} target="_blank" rel="noreferrer" className="w-20 h-20 relative rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-white/50 transition-all opacity-80 hover:opacity-100" title="Фото из Яндекс Маркета">
-                    <Image src={product.market_image} alt="Market" fill className="object-cover bg-white" />
-                  </a>
+
+            {/* Правая колонка: Основная информация */}
+            <div className="p-8 lg:p-10 flex flex-col">
+              <div className="text-gray-400 font-mono tracking-wider mb-2 text-sm">
+                Артикул: {product.article}
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 leading-tight">
+                {product.name}
+              </h1>
+              
+              {/* Наша цена */}
+              <div className="mb-8">
+                <div className="flex items-baseline gap-4 mb-1">
+                  <span className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">{formatPrice(product.our_price)}</span>
+                  {product.shops.length > 0 && (
+                    <span className="text-xl text-gray-400 line-through decoration-red-500/50">{product.shops[0].price_text.replace('Ссылка', '').trim()}</span>
+                  )}
                 </div>
               </div>
-            )}
-            {/* Значок оригинальности */}
-            <div className="absolute top-8 right-8 w-24 h-24 drop-shadow-2xl z-10 opacity-90 hover:opacity-100 hover:rotate-12 hover:scale-110 transition-all cursor-pointer" title="Оригинальный товар">
-              <Image
-                src="/images/badge.png"
-                alt="100% Original"
-                fill
-                className="object-contain"
-              />
-            </div>
-          </div>
-
-          {/* Правая колонка: Основная информация */}
-          <div className="flex flex-col">
-            <div className="text-red-500 font-mono tracking-wider mb-2 font-bold text-lg">
-              АРТ: {product.article}
-            </div>
-            <h1 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
-              {product.name}
-            </h1>
-            
-            {/* Наша цена и преимущества */}
-            <div className="glass-card rounded-2xl p-6 mb-8 border-red-500/30 bg-red-500/5">
-              <div className="flex flex-col mb-4">
-                <span className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-1">Специальное предложение</span>
-                <div className="text-4xl md:text-5xl font-black text-red-500">{formatPrice(product.our_price)}</div>
-              </div>
               
-              <div className="space-y-3 mt-6">
+              <div className="space-y-3 mb-8">
                 {product.quantity > 0 ? (
-                  <div className="flex items-center gap-3 text-emerald-400 font-medium bg-emerald-400/10 p-3 rounded-xl border border-emerald-400/20">
+                  <div className="flex items-center gap-3 text-green-700 font-medium bg-green-50 px-4 py-3 rounded-xl">
                     <Truck size={20} className="flex-shrink-0" />
-                    <span>Доставка по Москве в день обращения, или отгрузка транспортной компанией</span>
+                    <span>Доставка по Москве от 1 дня</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-amber-400 font-medium bg-amber-400/10 p-3 rounded-xl border border-amber-400/20">
+                  <div className="flex items-center gap-3 text-amber-700 font-medium bg-amber-50 px-4 py-3 rounded-xl">
                     <Clock size={20} />
                     <span>Под заказ: доставка через 20 дней</span>
                   </div>
                 )}
-                <div className="flex items-center gap-3 text-amber-400 font-medium bg-amber-400/10 p-3 rounded-xl border border-amber-400/20">
-                  <Tag size={20} />
-                  <span>Скидочный промокод при доставке в подарок</span>
-                </div>
               </div>
               
-              <button className="w-full mt-6 bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-600/20">
-                <ShoppingCart size={20} /> Оформить заказ
-              </button>
-            </div>
-            
-            {product.description && (
-              <div className="mb-8 bg-black/20 rounded-2xl p-6 border border-white/5">
-                <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-3">
-                  <Info className="text-red-500" /> Описание
-                </h3>
-                <p className="text-slate-300 leading-relaxed text-sm whitespace-pre-wrap">
-                  {product.description}
-                </p>
-              </div>
-            )}
-
-            <div>
-              <h3 className="flex items-center gap-2 text-lg font-bold text-slate-400 mb-4">
-                Для сравнения: цены конкурентов
-              </h3>
-              <div className="space-y-2 opacity-70 hover:opacity-100 transition-opacity">
-                {product.shops.map((shop: any, idx: number) => (
-                  <a 
-                    key={idx}
-                    href={shop.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-black/30 hover:bg-white/5 transition-all"
-                  >
-                    <div>
-                      <div className="font-bold text-slate-400 line-through decoration-red-500/50">{shop.name}</div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-lg font-bold text-slate-500 line-through decoration-red-500/50">
-                        {shop.price_text.replace('Ссылка', '').trim()}
-                      </span>
-                      <ExternalLink size={16} className="text-slate-600" />
-                    </div>
-                  </a>
-                ))}
-              </div>
+              <a href="tel:8777414141" className="w-full mb-8 bg-[#005bff] hover:bg-[#004cd6] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md text-lg">
+                <ShoppingCart size={22} /> В корзину (8 777 41 41 41)
+              </a>
+              
+              {product.description && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">Описание</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap">
+                    {product.description}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Блок характеристик на всю ширину */}
         {product.specs && Object.keys(product.specs).length > 0 && (
-          <div className="mt-16 glass-card rounded-3xl p-8 md:p-12">
-            <h3 className="flex items-center gap-3 text-2xl font-black text-white mb-8">
-              <Settings className="text-red-500" size={28} /> Технические характеристики
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+          <div className="mt-8 bg-white rounded-2xl p-8 md:p-10 border border-gray-200 shadow-sm">
+            <h3 className="text-2xl font-bold text-gray-900 mb-8">Характеристики</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0">
               {Object.entries(product.specs).map(([key, value]) => (
-                <div key={key} className="flex justify-between py-3 border-b border-white/5 hover:bg-white/5 px-2 rounded transition-colors">
-                  <span className="text-slate-400 pr-4">{key}</span>
-                  <span className="text-white font-medium text-right font-mono text-sm max-w-[60%]">{value as string}</span>
+                <div key={key} className="flex justify-between py-3 border-b border-gray-100 last:border-b-0 md:last:border-b">
+                  <span className="text-gray-500">{key}</span>
+                  <span className="text-gray-900 font-medium text-right max-w-[60%]">{value as string}</span>
                 </div>
               ))}
             </div>

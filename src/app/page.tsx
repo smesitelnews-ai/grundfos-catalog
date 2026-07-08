@@ -11,7 +11,7 @@ export default async function Home() {
 
   // Обогащаем товары реальными путями к картинкам
   const enrichedProducts = products.map((product: any) => {
-    const imagePath = `/images/pumps_v5/${product.article}.jpg`;
+    const imagePath = `/images/pumps_v6/${product.article}.jpg`;
     const localPath = path.join(process.cwd(), 'public', imagePath);
     const hasRealImage = fs.existsSync(localPath);
     return {
@@ -21,47 +21,55 @@ export default async function Home() {
   });
 
   return (
-    <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-16 text-center space-y-4">
-          <div className="inline-flex flex-col items-center justify-center p-6 bg-black/40 backdrop-blur-md rounded-3xl mb-4 border border-white/10 shadow-2xl shadow-blue-500/10 w-full max-w-md mx-auto">
-            <div className="relative w-32 h-32 mb-4 drop-shadow-2xl hover:scale-105 transition-transform duration-500">
-              <Image 
-                src="/images/logo41.png" 
-                alt="41 км МКАД" 
-                fill 
-                className="object-contain rounded-2xl" 
-                priority
-              />
+    <main className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#f5f6f8]">
+      <div className="max-w-[1400px] mx-auto">
+        <header className="mb-10 space-y-6">
+          <div className="flex flex-col md:flex-row gap-6 items-start">
+            
+            {/* Map and Contacts Sidebar */}
+            <div className="w-full md:w-1/3 flex flex-col items-center justify-center p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
+              <div className="relative w-28 h-28 mb-3 hover:scale-105 transition-transform duration-300">
+                <Image 
+                  src="/images/logo41.png" 
+                  alt="41 км МКАД" 
+                  fill 
+                  className="object-contain" 
+                  priority
+                />
+              </div>
+              <div className="w-full text-center">
+                <span className="text-lg font-black text-gray-900 tracking-wide uppercase mb-3 text-center block">
+                  Складские остатки <br/> <span className="text-[#005bff]">41км МКАД ряд Б, 2/1</span> 📍
+                </span>
+                <div className="rounded-xl overflow-hidden shadow-sm border border-gray-100 mb-4 h-[200px] w-full relative">
+                  <iframe 
+                    src="https://yandex.ru/map-widget/v1/-/CTu4eMKR" 
+                    width="100%" 
+                    height="100%" 
+                    frameBorder="0" 
+                    allowFullScreen={true}
+                    className="absolute inset-0"
+                  ></iframe>
+                </div>
+              </div>
+              <a href="tel:8777414141" className="bg-[#f91155] hover:bg-[#d60e48] text-white font-black py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md text-lg w-full">
+                Звоните 8 777 41 41 41
+              </a>
             </div>
-            <div className="w-full text-center">
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-red-500 tracking-wider uppercase mb-2 text-center block">
-                Складские остатки 41км МКАД 📍
-              </span>
-              <div className="rounded-xl overflow-hidden shadow-lg border border-white/10 mb-4 h-[250px] w-full relative group">
-                <iframe 
-                  src="https://yandex.ru/map-widget/v1/-/CTu4eMKR" 
-                  width="100%" 
-                  height="100%" 
-                  frameBorder="0" 
-                  allowFullScreen={true}
-                  className="absolute inset-0"
-                ></iframe>
-                <div className="absolute inset-0 pointer-events-none rounded-xl ring-inset ring-1 ring-white/10 group-hover:ring-white/30 transition-all"></div>
+
+            {/* Title & Info */}
+            <div className="w-full md:w-2/3 space-y-6 flex flex-col justify-center py-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight leading-tight">
+                Grundfos <span className="text-[#005bff]">Оригинал</span>
+              </h1>
+              <p className="text-gray-600 text-lg max-w-2xl leading-relaxed">
+                Официальные поставки оборудования. Мы находим лучшие предложения.
+              </p>
+              <div className="flex flex-wrap gap-4 items-center">
+                <ExportButtons products={enrichedProducts} />
               </div>
             </div>
-            <a href="tel:8777414141" className="bg-red-600 hover:bg-red-500 text-white font-black py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-600/20 text-xl w-full">
-              Звоните 8 777 41 41 41
-            </a>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight">
-            Grundfos <span className="text-red-500">Премиум</span> Каталог
-          </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-6">
-            Автоматический мониторинг цен на оригинальные насосы Grundfos в магазинах РФ. Мы находим лучшие предложения.
-          </p>
-          <div className="flex justify-center">
-            <ExportButtons products={enrichedProducts} />
+
           </div>
         </header>
         

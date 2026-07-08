@@ -60,76 +60,67 @@ export default function CatalogClient({ products }: { products: Product[] }) {
   }, [products, searchQuery, selectedType, sortOrder, inStockOnly, minPriceFilter, maxPriceFilter]);
 
   return (
-    <div className="space-y-8">
-      {/* Search and Filters */}
-      <div className="glass-panel rounded-2xl p-6 space-y-6">
-        <div className="flex items-center gap-3 bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus-within:border-red-500/50 transition-colors">
-          <Search className="text-slate-400" />
-          <input 
-            type="text" 
-            placeholder="Поиск по артикулу или названию..." 
-            className="bg-transparent border-none outline-none text-white w-full placeholder:text-slate-500"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Sidebar Filters */}
+      <div className="w-full lg:w-64 flex-shrink-0 space-y-6">
+        <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm space-y-6">
+          <h2 className="font-bold text-lg text-gray-900 border-b border-gray-100 pb-3">Фильтры</h2>
+          
           <div className="space-y-2">
-            <label className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Тип насоса</label>
+            <label className="text-sm font-semibold text-gray-700">Поиск</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
+              <input 
+                type="text" 
+                placeholder="Артикул, название..." 
+                className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg pl-10 pr-3 py-2 focus:border-[#005bff] focus:ring-1 focus:ring-[#005bff] outline-none transition-all placeholder:text-gray-400"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-gray-700">Тип насоса</label>
             <select 
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2.5 focus:border-red-500/50 focus:outline-none transition-colors appearance-none"
+              className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg px-3 py-2 focus:border-[#005bff] focus:ring-1 focus:ring-[#005bff] outline-none transition-all"
             >
               {types.map(t => (
-                <option key={t as string} value={t as string} className="bg-slate-800 text-white">{t as string}</option>
+                <option key={t as string} value={t as string}>{t as string}</option>
               ))}
             </select>
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Сортировка</label>
-            <select 
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2.5 focus:border-red-500/50 focus:outline-none transition-colors appearance-none"
-            >
-              <option value="price-asc" className="bg-slate-800 text-white">Сначала дешевле</option>
-              <option value="price-desc" className="bg-slate-800 text-white">Сначала дороже</option>
-              <option value="name-asc" className="bg-slate-800 text-white">По названию (А-Я)</option>
-              <option value="name-desc" className="bg-slate-800 text-white">По названию (Я-А)</option>
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Цена (₽)</label>
-            <div className="flex gap-2">
+            <label className="text-sm font-semibold text-gray-700">Цена (₽)</label>
+            <div className="flex items-center gap-2">
               <input 
                 type="number" 
                 placeholder="От" 
                 value={minPriceFilter}
                 onChange={(e) => setMinPriceFilter(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2.5 focus:border-red-500/50 focus:outline-none transition-colors placeholder:text-slate-600"
+                className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg px-3 py-2 focus:border-[#005bff] focus:ring-1 focus:ring-[#005bff] outline-none transition-all"
               />
+              <span className="text-gray-400">-</span>
               <input 
                 type="number" 
                 placeholder="До" 
                 value={maxPriceFilter}
                 onChange={(e) => setMaxPriceFilter(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 text-white rounded-lg px-3 py-2.5 focus:border-red-500/50 focus:outline-none transition-colors placeholder:text-slate-600"
+                className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg px-3 py-2 focus:border-[#005bff] focus:ring-1 focus:ring-[#005bff] outline-none transition-all"
               />
             </div>
           </div>
 
-          <div className="flex items-end pb-2">
+          <div className="pt-2 border-t border-gray-100">
             <label className="flex items-center gap-3 cursor-pointer group">
-              <div className={`w-6 h-6 rounded flex items-center justify-center border transition-colors ${inStockOnly ? 'bg-red-500 border-red-500' : 'bg-white/5 border-white/20 group-hover:border-white/40'}`}>
-                {inStockOnly && <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
+              <div className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${inStockOnly ? 'bg-[#005bff] border-[#005bff]' : 'bg-gray-50 border-gray-300 group-hover:border-[#005bff]'}`}>
+                {inStockOnly && <Check size={14} className="text-white" />}
               </div>
-              <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">Только в наличии</span>
+              <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">Сначала в наличии</span>
             </label>
-            {/* hidden checkbox */}
             <input 
               type="checkbox" 
               className="hidden"
@@ -138,33 +129,49 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             />
           </div>
         </div>
-        
-        <div className="flex items-center justify-between border-t border-white/10 pt-4">
-          <div className="text-sm text-slate-400 flex items-center gap-2">
-            <Filter size={16} />
-            <span>Найдено: <strong className="text-white">{filteredProducts.length}</strong> из {products.length} товаров</span>
-          </div>
-        </div>
       </div>
 
-      {/* Product Grid */}
-      {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.article} product={product} />
-          ))}
-        </div>
-      ) : (
-        <div className="glass-panel rounded-2xl p-12 text-center flex flex-col items-center justify-center border-dashed border-2 border-slate-700">
-          <div className="bg-slate-800/50 p-4 rounded-full mb-4">
-            <Box size={48} className="text-slate-500" />
+      {/* Main Content */}
+      <div className="flex-1 space-y-6">
+        {/* Top Bar */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+          <div className="text-sm text-gray-500 font-medium">
+            Найдено товаров: <span className="text-gray-900 font-bold">{filteredProducts.length}</span>
           </div>
-          <h3 className="text-xl font-bold text-white mb-2">Товары не найдены</h3>
-          <p className="text-slate-400 max-w-md">
-            По вашему запросу ничего не найдено. Попробуйте изменить параметры поиска или сбросить фильтры.
-          </p>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <label className="text-sm text-gray-500 whitespace-nowrap">Сортировка:</label>
+            <select 
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="bg-transparent border-none text-gray-900 font-medium focus:ring-0 outline-none cursor-pointer"
+            >
+              <option value="price-asc">Сначала дешевле</option>
+              <option value="price-desc">Сначала дороже</option>
+              <option value="name-asc">По названию (А-Я)</option>
+              <option value="name-desc">По названию (Я-А)</option>
+            </select>
+          </div>
         </div>
-      )}
+
+        {/* Product Grid */}
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.article} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl p-12 text-center flex flex-col items-center justify-center border border-gray-200 shadow-sm">
+            <div className="bg-gray-50 p-4 rounded-full mb-4">
+              <Box size={48} className="text-gray-400" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Товары не найдены</h3>
+            <p className="text-gray-500 max-w-md">
+              По вашему запросу ничего не найдено. Попробуйте изменить параметры поиска или сбросить фильтры.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
