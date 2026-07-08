@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { Key, Store, RefreshCw, LogOut, Package, Image as ImageIcon, AlertCircle } from 'lucide-react';
 import productsData from '../../../public/products.json';
-
+import { ExportWizardModal, ExportSettings } from '../../components/ozon/ExportWizardModal';
+import { OzonProductRow } from '../../components/ozon/OzonProductRow';
 export default function OzonDashboard() {
   const [clientId, setClientId] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -18,7 +19,16 @@ export default function OzonDashboard() {
   const [exportMessage, setExportMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [exportSettings, setExportSettings] = useState({
+  const [exportSettings, setExportSettings] = useState<ExportSettings>({
+    vat: "0.2",
+    markup: 0,
+    depth: 300,
+    width: 200,
+    height: 150,
+    weight: 2500,
+    guarantee: "1 год",
+    brand: "Grundfos",
+    country: "Дания",
     exportDescription: true,
     exportImages: true,
     exportPrice: true,
@@ -37,18 +47,9 @@ export default function OzonDashboard() {
       "Потребляемая мощность (P1)": true,
       "Степень защиты (IEC 34-5)": true,
       "Вес нетто": true
-    } as Record<string, boolean>
+    },
+    selectedProductIds: new Set(productsData.map(p => p.article))
   });
-
-  const toggleSpec = (spec: string) => {
-    setExportSettings(prev => ({
-      ...prev,
-      specsList: {
-        ...prev.specsList,
-        [spec]: !prev.specsList[spec]
-      }
-    }));
-  };
 
   // Восстановление ключей из кэша
   useEffect(() => {
@@ -110,26 +111,33 @@ export default function OzonDashboard() {
     }
   };
 
-  const handleExport = async () => {
+  const handleExport = async (finalSettings: ExportSettings) => {
     setIsSettingsModalOpen(false);
     setIsExporting(true);
     setExportMessage(null);
+    setExportSettings(finalSettings); // Сохраняем последние настройки
+    
+    // Фильтруем товары, чтобы отправить только выбранные
+    const productsToExport = productsData.filter(p => finalSettings.selectedProductIds.has(p.article));
+
     try {
       const res = await fetch('/api/ozon/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          products: productsData, 
-          vat: "0.2",
+          products: productsToExport, 
+          vat: finalSettings.vat,
           clientId,
           apiKey,
-          settings: exportSettings
+          settings: finalSettings
         })
       });
       const data = await res.json();
       
       if (data.success) {
         setExportMessage({ type: 'success', text: data.message });
+        // После выгрузки обновляем статистику на дашборде
+        await fetchOzonProducts(clientId, apiKey);
       } else {
         setExportMessage({ type: 'error', text: data.error || 'Неизвестная ошибка' });
       }
@@ -303,42 +311,16 @@ export default function OzonDashboard() {
               <thead className="bg-gray-50 dark:bg-zinc-800/50 text-muted-foreground font-semibold uppercase text-xs">
                 <tr>
                   <th className="px-6 py-4">Фото</th>
-                  <th className="px-6 py-4 w-1/2">Название / Артикул</th>
+                  <th className="px-6 py-4 w-1/3">Название / Артикул</th>
                   <th className="px-6 py-4">Цена</th>
-                  <th className="px-6 py-4">Статус</th>
+                  <th className="px-6 py-4">Остатки</th>
+                  <th className="px-6 py-4">Статус / Ошибки</th>
+                  <th className="px-4 py-4 w-10"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {ozonProducts.map((product) => (
-                  <tr key={product.product_id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/30 transition-colors">
-                    <td className="px-6 py-3">
-                      <div className="w-12 h-12 bg-gray-100 dark:bg-zinc-800 rounded-lg overflow-hidden flex items-center justify-center border border-border">
-                        {product.primary_image ? (
-                          <img src={product.primary_image} alt="pic" className="w-full h-full object-cover" />
-                        ) : (
-                          <ImageIcon className="text-muted-foreground opacity-50" size={20} />
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-3">
-                      <div className="font-medium text-foreground line-clamp-2">{product.name}</div>
-                      <div className="text-xs text-muted-foreground mt-1">Арт: {product.offer_id}</div>
-                    </td>
-                    <td className="px-6 py-3 font-semibold whitespace-nowrap">
-                      {product.price || '-'} ₽
-                    </td>
-                    <td className="px-6 py-3">
-                      <span className={`px-2.5 py-1 rounded-md text-xs font-bold inline-block whitespace-nowrap ${
-                        product.status?.state_name?.includes('Готов') || product.status?.state_name?.includes('Продается')
-                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' 
-                          : product.status?.state_name?.includes('Ошиб')
-                          ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                          : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                      }`}>
-                        {product.status?.state_name || 'Неизвестно'}
-                      </span>
-                    </td>
-                  </tr>
+                  <OzonProductRow key={product.product_id} product={product} clientId={clientId} apiKey={apiKey} />
                 ))}
               </tbody>
             </table>
@@ -347,90 +329,14 @@ export default function OzonDashboard() {
       </div>
 
       {/* Settings Modal */}
-      {isSettingsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl w-full max-w-2xl shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="p-6 border-b border-border flex justify-between items-center">
-              <h2 className="text-xl font-bold">Настройки выгрузки на Ozon</h2>
-              <button onClick={() => setIsSettingsModalOpen(false)} className="text-muted-foreground hover:text-foreground">
-                <LogOut size={24} />
-              </button>
-            </div>
-            
-            <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
-              <div className="space-y-6">
-                
-                {/* Basic Fields */}
-                <div>
-                  <h3 className="font-semibold text-lg mb-3">Базовые поля</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors">
-                      <input type="checkbox" className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500" checked={exportSettings.exportDescription} onChange={(e) => setExportSettings(s => ({...s, exportDescription: e.target.checked}))} />
-                      <span className="font-medium">Описание товара</span>
-                    </label>
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors">
-                      <input type="checkbox" className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500" checked={exportSettings.exportImages} onChange={(e) => setExportSettings(s => ({...s, exportImages: e.target.checked}))} />
-                      <span className="font-medium">Изображения</span>
-                    </label>
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors">
-                      <input type="checkbox" className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500" checked={exportSettings.exportPrice} onChange={(e) => setExportSettings(s => ({...s, exportPrice: e.target.checked}))} />
-                      <span className="font-medium">Цена (min_price)</span>
-                    </label>
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors">
-                      <input type="checkbox" className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500" checked={exportSettings.exportBarcode} onChange={(e) => setExportSettings(s => ({...s, exportBarcode: e.target.checked}))} />
-                      <span className="font-medium">Штрихкод (EAN-13)</span>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Specs */}
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-lg">Характеристики</h3>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" className="w-4 h-4 rounded text-blue-600" checked={exportSettings.exportSpecs} onChange={(e) => setExportSettings(s => ({...s, exportSpecs: e.target.checked}))} />
-                      <span className="text-sm font-medium">Выгружать характеристики</span>
-                    </label>
-                  </div>
-                  
-                  {exportSettings.exportSpecs && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 dark:bg-zinc-900/50 p-4 rounded-xl border border-border">
-                      {Object.keys(exportSettings.specsList).map((spec) => (
-                        <label key={spec} className="flex items-center gap-2 cursor-pointer group">
-                          <input 
-                            type="checkbox" 
-                            className="w-4 h-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500" 
-                            checked={exportSettings.specsList[spec]} 
-                            onChange={() => toggleSpec(spec)} 
-                          />
-                          <span className="text-sm text-foreground/80 group-hover:text-foreground transition-colors">{spec}</span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-              </div>
-            </div>
-            
-            <div className="p-6 border-t border-border flex justify-end gap-3 bg-gray-50/50 dark:bg-zinc-900/50 rounded-b-3xl">
-              <button 
-                onClick={() => setIsSettingsModalOpen(false)}
-                className="px-6 py-2.5 rounded-xl font-bold border border-border hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-              >
-                Отмена
-              </button>
-              <button 
-                onClick={handleExport}
-                className="px-8 py-2.5 rounded-xl font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md flex items-center gap-2 transition-all"
-              >
-                <RefreshCw size={18} />
-                Начать выгрузку
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ExportWizardModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        localProducts={productsData}
+        initialSettings={exportSettings}
+        onExport={handleExport}
+        isExporting={isExporting}
+      />
 
     </div>
   );

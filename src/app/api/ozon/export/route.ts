@@ -38,10 +38,10 @@ export async function POST(request: Request) {
       }
 
       // Габариты (по умолчанию, если нет)
-      const depth = 30;
-      const width = 20;
-      const height = 20;
-      const weight = 5;
+      const depth = s.depth || 300;
+      const width = s.width || 200;
+      const height = s.height || 150;
+      const weight = s.weight || 2500;
 
       // Формируем URL изображения (должен быть абсолютным)
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grundfos-catalog-demo.vercel.app";
@@ -56,15 +56,18 @@ export async function POST(request: Request) {
         depth,
         width,
         height,
-        dimension_unit: "cm",
+        dimension_unit: "mm",
         weight,
-        weight_unit: "kg",
+        weight_unit: "g",
         attributes: mapProductToOzonAttributes(product, ozonCategoryName, s),
         complex_attributes: []
       };
 
       if (s.exportPrice) {
-        item.price = String(product.our_price || product.min_price || 10000);
+        const basePrice = product.our_price || product.min_price || 10000;
+        const markupPercent = Number(s.markup) || 0;
+        const finalPrice = Math.round(basePrice * (1 + markupPercent / 100));
+        item.price = String(finalPrice);
       } else {
         item.price = "0"; // Ozon might require a price, but if disabled we can send 0 or skip it if allowed
       }

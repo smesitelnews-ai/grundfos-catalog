@@ -22,8 +22,24 @@ export function mapProductToOzonAttributes(product: any, categoryName: string, s
   // 1. Бренд (ID: 85, словарь Ozon: 28732849)
   attributes.push({
     id: 85,
-    values: [{ value: "Grundfos" }]
+    values: [{ value: settings?.brand || "Grundfos" }]
   });
+
+  // Страна-изготовитель (ID: 4389)
+  if (settings?.country) {
+    attributes.push({
+      id: 4389,
+      values: [{ value: settings.country }]
+    });
+  }
+
+  // Гарантийный срок (ID: 11253)
+  if (settings?.guarantee) {
+    attributes.push({
+      id: 11253,
+      values: [{ value: settings.guarantee }]
+    });
+  }
 
   // 2. Тип (ID: 8229)
   attributes.push({
