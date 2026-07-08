@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Ключи авторизации или ID товара не переданы' }, { status: 400 });
     }
 
-    const response = await ozonFetch<any>('/v3/products/info/attributes', {
+    const response = await ozonFetch<any>('/v4/product/info/attributes', {
       method: 'POST',
       clientId,
       apiKey,
