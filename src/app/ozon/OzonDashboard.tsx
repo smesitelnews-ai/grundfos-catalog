@@ -7,7 +7,10 @@ import { ExportWizardModal, ExportSettings } from '../../components/ozon/ExportW
 import { OzonProductRow } from '../../components/ozon/OzonProductRow';
 import { OzonPricesTab } from '../../components/ozon/OzonPricesTab';
 import { OzonStocksTab } from '../../components/ozon/OzonStocksTab';
-
+import { OzonEconomicsCharts } from '../../components/ozon/OzonEconomicsCharts';
+import { OzonProductsTab } from '../../components/ozon/OzonProductsTab';
+import { OzonFinanceTab } from '../../components/ozon/OzonFinanceTab';
+import { OzonFbsTab } from '../../components/ozon/OzonFbsTab';
 export default function OzonDashboard() {
   const [clientId, setClientId] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -15,7 +18,7 @@ export default function OzonDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'prices' | 'stocks'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'finance' | 'fbs' | 'prices' | 'stocks'>('overview');
   
   const [ozonProducts, setOzonProducts] = useState<any[]>([]);
   const [ozonStats, setOzonStats] = useState({ total: 0, inSale: 0, toSupply: 0, errors: 0 });
@@ -324,7 +327,9 @@ export default function OzonDashboard() {
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2 custom-scrollbar">
         {[
           { id: 'overview', icon: BarChart2, label: 'Сводка' },
-          { id: 'products', icon: Package, label: 'Товары Ozon' },
+          { id: 'products', icon: Package, label: 'Товары' },
+          { id: 'finance', icon: DollarSign, label: 'Финансы' },
+          { id: 'fbs', icon: Warehouse, label: 'FBS' },
           { id: 'prices', icon: DollarSign, label: 'Управление ценами' },
           { id: 'stocks', icon: Warehouse, label: 'Склады FBS' }
         ].map(tab => (
@@ -404,48 +409,28 @@ export default function OzonDashboard() {
               <div className="text-muted-foreground text-xs sm:text-sm mt-1 font-medium">С ошибками</div>
             </div>
           </div>
+
+          {/* Economics Dashboard */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-6">Экономика магазина (Аналитика Ozon)</h2>
+            <OzonEconomicsCharts clientId={clientId} apiKey={apiKey} />
+          </div>
         </>
       )}
 
-      {/* Product List */}
+      {/* Product List UI Replica */}
       {activeTab === 'products' && (
-        <div className="bg-white dark:bg-zinc-900 border border-border rounded-2xl shadow-sm overflow-hidden mb-8">
-          <div className="p-6 border-b border-border">
-            <h3 className="text-lg font-bold">Карточки товаров Ozon</h3>
-          </div>
-          
-          {isLoading ? (
-            <div className="p-12 flex justify-center text-blue-500">
-              <RefreshCw className="animate-spin" size={32} />
-            </div>
-          ) : ozonStats.total === 0 ? (
-            <div className="p-12 text-center text-muted-foreground">
-              <Package size={48} className="mx-auto mb-4 opacity-20" />
-              <p>Нет загруженных товаров на Ozon.</p>
-              <p className="text-sm mt-2">Используйте вкладку "Сводка", чтобы загрузить каталог.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-gray-50 dark:bg-zinc-800/50 text-muted-foreground font-semibold uppercase text-xs">
-                  <tr>
-                    <th className="px-6 py-4">Фото</th>
-                    <th className="px-6 py-4 w-1/3">Название / Артикул</th>
-                    <th className="px-6 py-4">Цена</th>
-                    <th className="px-6 py-4">Остатки</th>
-                    <th className="px-6 py-4">Статус / Ошибки</th>
-                    <th className="px-4 py-4 w-10"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {ozonProducts.map((product) => (
-                    <OzonProductRow key={product.id} product={product} clientId={clientId} apiKey={apiKey} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+        <OzonProductsTab clientId={clientId} apiKey={apiKey} />
+      )}
+
+      {/* Finance UI Replica */}
+      {activeTab === 'finance' && (
+        <OzonFinanceTab clientId={clientId} apiKey={apiKey} />
+      )}
+
+      {/* FBS UI Replica */}
+      {activeTab === 'fbs' && (
+        <OzonFbsTab clientId={clientId} apiKey={apiKey} />
       )}
 
       {activeTab === 'prices' && (
