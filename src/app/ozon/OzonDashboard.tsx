@@ -420,7 +420,7 @@ export default function OzonDashboard() {
 
       {/* Product List UI Replica */}
       {activeTab === 'products' && (
-        <OzonProductsTab clientId={clientId} apiKey={apiKey} />
+        <OzonProductsTab clientId={clientId} apiKey={apiKey} products={ozonProducts} stats={ozonStats} />
       )}
 
       {/* Finance UI Replica */}

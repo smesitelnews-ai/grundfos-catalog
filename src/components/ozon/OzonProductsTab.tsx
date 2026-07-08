@@ -1,72 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { browserOzonFetch } from '../../lib/ozon/ozonClient';
+import React, { useState } from 'react';
 
 interface Props {
   clientId: string;
   apiKey: string;
+  products: any[];
+  stats: { total: number; inSale: number; toSupply: number; errors: number; };
 }
 
-export function OzonProductsTab({ clientId, apiKey }: Props) {
-  const [loading, setLoading] = useState(false);
+export function OzonProductsTab({ clientId, apiKey, products, stats }: Props) {
   const [activeTab, setActiveTab] = useState('all');
-
-  // Данные для демо, чтобы в точности повторять UI скриншота, 
-  // если реальных товаров на аккаунте нет
-  const [counts, setCounts] = useState({
-    all: 1333,
-    on_sale: 242,
-    ready: 755,
-    errors: 257,
-    in_work: 54,
-    removed: 84,
-    archive: 225
-  });
-
-  const [products, setProducts] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (!clientId || !apiKey) return;
-
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        // Запрос к API
-        // В реальности нужно делать запросы с фильтрами состояний для каждого счетчика,
-        // но здесь мы покажем только моковые данные счетчиков и запросим список
-        const data = await browserOzonFetch<any>('/v2/product/list', {
-          clientId,
-          apiKey,
-          body: {
-            filter: { visibility: 'ALL' },
-            limit: 10,
-            last_id: ""
-          }
-        });
-
-        if (data && data.result && data.result.items) {
-          // Если API отдает реальные товары, обновим список (можно маппить ID)
-          setProducts(data.result.items);
-        }
-      } catch (err) {
-        console.error('Products error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [clientId, apiKey]);
 
   if (!clientId || !apiKey) return null;
 
   const tabs = [
-    { id: 'all', label: 'Все', count: counts.all },
-    { id: 'on_sale', label: 'В продаже', count: counts.on_sale },
-    { id: 'ready', label: 'Готовы к продаже', count: counts.ready },
-    { id: 'errors', label: 'Ошибки', count: counts.errors, isError: true },
-    { id: 'in_work', label: 'На доработку', count: counts.in_work, isWarning: true },
-    { id: 'removed', label: 'Сняты с продажи', count: counts.removed },
-    { id: 'archive', label: 'Архив', count: counts.archive },
+    { id: 'all', label: 'Все', count: stats.total },
+    { id: 'on_sale', label: 'В продаже', count: stats.inSale },
+    { id: 'ready', label: 'Готовы к продаже', count: stats.toSupply },
+    { id: 'errors', label: 'Ошибки', count: stats.errors, isError: true },
+    { id: 'in_work', label: 'На доработку', count: 0, isWarning: true },
+    { id: 'removed', label: 'Сняты с продажи', count: 0 },
+    { id: 'archive', label: 'Архив', count: 0 },
   ];
 
   return (
@@ -131,26 +84,28 @@ export function OzonProductsTab({ clientId, apiKey }: Props) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {/* Пример строки из скриншота */}
-            <tr className="hover:bg-gray-50">
-              <td className="px-4 py-4 font-medium">EM-2994</td>
-              <td className="px-4 py-4 border-l border-gray-200 truncate max-w-xs">
-                Подушка двигателя (WESTAR) EM-2994 (1999
-              </td>
-              <td className="px-4 py-4">07.07.2026</td>
-              <td className="px-4 py-4">
-                <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-medium">Не продается</span>
-                <span className="ml-2 text-red-500 text-xs font-bold">1</span>
-              </td>
-              <td className="px-4 py-4 text-right pr-8">0</td>
-              <td className="px-4 py-4">
-                <button className="text-blue-600 font-medium">Добавить</button>
-              </td>
-            </tr>
-            {products.length === 0 && !loading && (
+            {products.map((product) => (
+              <tr key={product.id || product.offer_id} className="hover:bg-gray-50">
+                <td className="px-4 py-4 font-medium">{product.offer_id}</td>
+                <td className="px-4 py-4 border-l border-gray-200 truncate max-w-xs" title={product.name}>
+                  {product.name}
+                </td>
+                <td className="px-4 py-4">{product.created_at ? new Date(product.created_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</td>
+                <td className="px-4 py-4">
+                  <span className={`px-2 py-1 text-xs rounded font-medium ${product.status?.state_name === 'Продается' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                    {product.status?.state_name || product.status?.validation_state || 'Не продается'}
+                  </span>
+                </td>
+                <td className="px-4 py-4 text-right pr-8">{product.stocks?.present || 0}</td>
+                <td className="px-4 py-4">
+                  <button className="text-blue-600 font-medium">Добавить</button>
+                </td>
+              </tr>
+            ))}
+            {products.length === 0 && (
               <tr>
                  <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
-                    Остальные товары не найдены (или загружаются через API)
+                    Товары не найдены (нажмите "Обновить данные" на главной вкладке)
                  </td>
               </tr>
             )}
