@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     // Сначала получаем список product_id магазина
-    const listResponse = await ozonFetch<any>('/v2/product/list', {
+    const listResponse = await ozonFetch<any>('/v3/product/list', {
       method: 'POST',
       clientId,
       apiKey,
@@ -31,12 +31,14 @@ export async function POST(request: Request) {
     }
 
     // Теперь получаем подробную информацию об этих товарах
-    const infoResponse = await ozonFetch<any>('/v2/product/info/list', {
+    const infoResponse = await ozonFetch<any>('/v3/product/info/list', {
       method: 'POST',
       clientId,
       apiKey,
       body: {
-        product_id: productIds
+        product_id: productIds,
+        offer_id: [],
+        sku: []
       }
     });
 
