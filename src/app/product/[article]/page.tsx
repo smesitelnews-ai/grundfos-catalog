@@ -30,7 +30,7 @@ export default async function ProductPage({ params }: { params: Promise<{ articl
   const imagePath = `/images/pumps_v2/${product.article}.jpg`;
   const localPath = path.join(process.cwd(), 'public', imagePath);
   const hasRealImage = fs.existsSync(localPath);
-  const displayImage = hasRealImage ? imagePath + '?v=2' : '/images/grundfos_pump.png';
+  const displayImage = hasRealImage ? imagePath : '/images/grundfos_pump.png';
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';

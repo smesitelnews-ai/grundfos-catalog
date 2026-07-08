@@ -31,8 +31,7 @@ export default function ExportButtons({ products, isSingle = false }: ExportButt
     setIsExportingPdf(true);
     try {
       const doc = <CatalogPdf products={products} isSingle={isSingle} />;
-      const asPdf = pdf([]); // Create a fresh PDF instance
-      asPdf.updateContainer(doc); // Render the React element
+      const asPdf = pdf(doc); // Create a fresh PDF instance
       const blob = await asPdf.toBlob();
       
       const url = URL.createObjectURL(blob);

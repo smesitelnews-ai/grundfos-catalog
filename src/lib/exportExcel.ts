@@ -66,7 +66,7 @@ export async function exportToExcel(products: any[], singleProduct: boolean = fa
           tl: { col: 1.1, row: row.number - 1 + 0.1 },
           br: { col: 1.9, row: row.number - 0.1 },
           editAs: 'oneCell'
-        });
+        } as any);
       }
     } catch (e) {
       console.warn("Could not load image for", p.article, e);
