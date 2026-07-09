@@ -68,7 +68,8 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
           others_amount: 0,
         });
       } else {
-        throw new Error("Не удалось получить данные о финансах (Пустой ответ API)");
+        const rawRes = responses.find(r => r !== null);
+        throw new Error("Не удалось распарсить данные: " + JSON.stringify(rawRes || 'все ответы null'));
       }
     } catch (err: any) {
       console.error('Finance error:', err);
