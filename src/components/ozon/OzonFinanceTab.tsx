@@ -74,21 +74,30 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
   return (
     <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm text-foreground">
       
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <DollarSign className="text-blue-500" /> Финансы (за {currentMonthName})
-        </h2>
-        <button 
-          onClick={fetchFinance}
-          disabled={loading}
-          className="px-4 py-2 text-sm font-medium border border-border rounded-lg flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
-        >
-          <RefreshCw size={16} className={loading ? "animate-spin" : ""} /> Обновить
-        </button>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+        <span>Финансы</span>
+        <span>›</span>
+        <span>Начисления и документы</span>
+      </div>
+
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-bold">Баланс</h2>
+        <div className="flex gap-4">
+          <button 
+            onClick={fetchFinance}
+            disabled={loading}
+            className="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors flex items-center gap-2"
+          >
+            <RefreshCw size={16} className={loading ? "animate-spin" : ""} /> Обновить
+          </button>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+            Пополнить основной баланс
+          </button>
+        </div>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 flex items-center gap-2">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 flex items-center gap-2">
           <AlertCircle size={20} />
           <span>{error}</span>
         </div>
@@ -102,67 +111,44 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
         </div>
       ) : financeData ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Total Balance Card */}
-            <div className="bg-gray-50 dark:bg-zinc-800/80 p-6 rounded-xl border border-border">
-              <div className="flex items-center gap-2 mb-2 text-muted-foreground">
-                <CreditCard size={18} />
-                <span className="text-sm font-medium">Итого за текущий месяц</span>
-              </div>
-              <div className={`text-4xl font-black mb-4 ${totalForMonth < 0 ? 'text-red-500 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                {totalForMonth.toLocaleString('ru-RU')} ₽
-              </div>
-            </div>
-
-            {/* Income Card */}
-            <div className="bg-emerald-50 dark:bg-emerald-900/10 p-6 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
-              <div className="flex items-center gap-2 mb-2 text-emerald-700 dark:text-emerald-500">
-                <TrendingUp size={18} />
-                <span className="text-sm font-medium">Начисления за продажи</span>
-              </div>
-              <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-400">
-                {financeData.accruals_for_sale.toLocaleString('ru-RU')} ₽
+          {/* Debt Warning */}
+          {totalForMonth < 0 && (
+            <div className="bg-red-50 dark:bg-red-900/10 p-6 rounded-xl mb-8">
+              <h3 className="font-bold text-lg mb-2 text-red-700 dark:text-red-400">У вас есть задолженность {Math.abs(totalForMonth).toLocaleString('ru-RU')} ₽</h3>
+              <p className="text-sm mb-4 text-red-900/70 dark:text-red-300">
+                Приостановили доступ к некоторым услугам. Пополните баланс, чтобы не оставаться в минусе.
+              </p>
+              <p className="text-sm text-red-900/60 dark:text-red-300/70 mb-4">
+                Формируем счет на оплату, только если зафиксировали задолженность за предыдущий месяц.<br/>
+                Посмотреть счета можно в разделе Финансы → Документы → Счета на оплату
+              </p>
+              <div className="flex gap-6 text-sm font-medium">
+                <a href="#" className="text-foreground hover:underline">Подробнее в Базе знаний</a>
+                <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">Посмотреть счета</a>
               </div>
             </div>
+          )}
 
-            {/* Expenses Card */}
-            <div className="bg-red-50 dark:bg-red-900/10 p-6 rounded-xl border border-red-100 dark:border-red-900/30">
-              <div className="flex items-center gap-2 mb-2 text-red-700 dark:text-red-500">
-                <TrendingDown size={18} />
-                <span className="text-sm font-medium">Услуги, возвраты и прочее</span>
-              </div>
-              <div className="text-3xl font-bold text-red-700 dark:text-red-400">
-                {(financeData.services_amount + financeData.refunds_and_cancellations + financeData.others_amount).toLocaleString('ru-RU')} ₽
-              </div>
+          {/* Balance Details */}
+          <div className="flex flex-col md:flex-row gap-8 border-t border-border pt-8">
+            <div className="w-64">
+              <div className="text-4xl font-bold mb-1">{totalForMonth.toLocaleString('ru-RU')} ₽</div>
+              <div className="text-sm text-muted-foreground">Текущий баланс</div>
+              <div className="text-xs text-muted-foreground mt-1 opacity-60">(Расчет за текущий месяц)</div>
             </div>
-          </div>
 
-          <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-border overflow-hidden">
-            <div className="p-4 border-b border-border font-bold">Детализация за месяц</div>
-            <div className="divide-y divide-border">
-              <div className="flex justify-between p-4 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
-                <span className="text-muted-foreground">Продажи</span>
-                <span className="font-medium text-emerald-600 dark:text-emerald-400">{financeData.accruals_for_sale.toLocaleString('ru-RU')} ₽</span>
+            <div className="flex-1 max-w-sm space-y-4 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">На начало месяца</span>
+                <span className="font-medium text-muted-foreground">Недоступно в API</span>
               </div>
-              <div className="flex justify-between p-4 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
-                <span className="text-muted-foreground">Возвраты и отмены</span>
-                <span className="font-medium text-red-500 dark:text-red-400">{financeData.refunds_and_cancellations.toLocaleString('ru-RU')} ₽</span>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Начислено в {currentMonthName}</span>
+                <span className="font-medium">{(financeData.accruals_for_sale + financeData.compensation_amount).toLocaleString('ru-RU')} ₽</span>
               </div>
-              <div className="flex justify-between p-4 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
-                <span className="text-muted-foreground">Услуги доставки и Ozon</span>
-                <span className="font-medium text-red-500 dark:text-red-400">{financeData.services_amount.toLocaleString('ru-RU')} ₽</span>
-              </div>
-              <div className="flex justify-between p-4 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
-                <span className="text-muted-foreground">Компенсации</span>
-                <span className="font-medium">{financeData.compensation_amount.toLocaleString('ru-RU')} ₽</span>
-              </div>
-              <div className="flex justify-between p-4 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
-                <span className="text-muted-foreground">Переводы денег</span>
-                <span className="font-medium">{financeData.money_transfer.toLocaleString('ru-RU')} ₽</span>
-              </div>
-              <div className="flex justify-between p-4 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors">
-                <span className="text-muted-foreground">Прочие начисления/списания</span>
-                <span className="font-medium">{financeData.others_amount.toLocaleString('ru-RU')} ₽</span>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Списано в {currentMonthName}</span>
+                <span className="font-medium">{(financeData.services_amount + financeData.refunds_and_cancellations + financeData.others_amount).toLocaleString('ru-RU')} ₽</span>
               </div>
             </div>
           </div>
