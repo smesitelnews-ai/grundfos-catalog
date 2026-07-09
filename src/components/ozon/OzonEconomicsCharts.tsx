@@ -71,15 +71,22 @@ export function OzonEconomicsCharts({ clientId, apiKey }: OzonEconomicsChartsPro
         const responses = await Promise.all(promises);
         
         responses.forEach((accrualsResponse, i) => {
-          if (accrualsResponse && accrualsResponse.result && Array.isArray(accrualsResponse.result)) {
+          if (accrualsResponse && accrualsResponse.accruals && Array.isArray(accrualsResponse.accruals)) {
              const day = days[i];
              const dayIndex = finalChartData.findIndex(d => d.date === day);
              if (dayIndex !== -1) {
-                accrualsResponse.result.forEach((accrual: any) => {
-                   finalChartData[dayIndex].revenue += accrual.revenue || 0;
-                   finalChartData[dayIndex].profit += accrual.profit || 0;
-                   totalRevenue += accrual.revenue || 0;
+                let dayProfit = 0;
+                let dayRevenue = 0;
+                accrualsResponse.accruals.forEach((accrual: any) => {
+                   const amt = parseFloat(accrual.total_amount?.amount || "0");
+                   dayProfit += amt;
+                   if (amt > 0) {
+                     dayRevenue += amt;
+                   }
                 });
+                finalChartData[dayIndex].revenue += dayRevenue;
+                finalChartData[dayIndex].profit += dayProfit;
+                totalRevenue += dayRevenue;
              }
           }
         });

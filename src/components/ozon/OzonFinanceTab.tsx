@@ -46,23 +46,31 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
       
       let totalRevenue = 0;
       let totalProfit = 0;
+      let totalServices = 0;
       let hasData = false;
 
       responses.forEach((res) => {
-        if (res && res.result && Array.isArray(res.result)) {
-           hasData = true;
-           res.result.forEach((accrual: any) => {
-             totalRevenue += accrual.revenue || 0;
-             totalProfit += accrual.profit || 0;
+        if (res && res.accruals && Array.isArray(res.accruals)) {
+           if (res.accruals.length > 0) {
+             hasData = true;
+           }
+           res.accruals.forEach((accrual: any) => {
+             const amt = parseFloat(accrual.total_amount?.amount || "0");
+             totalProfit += amt;
+             if (amt > 0) {
+               totalRevenue += amt;
+             } else {
+               totalServices += Math.abs(amt);
+             }
            });
         }
       });
 
-      if (hasData) {
+      if (hasData || responses.some(r => r && r.accruals)) { // Even if length is 0, if it responded with accruals array, it means success
         setFinanceData({
           accruals_for_sale: totalRevenue,
           refunds_and_cancellations: 0,
-          services_amount: totalRevenue - totalProfit,
+          services_amount: totalServices,
           compensation_amount: 0,
           money_transfer: 0,
           others_amount: 0,
