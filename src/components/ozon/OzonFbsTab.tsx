@@ -9,13 +9,13 @@ interface Props {
 export function OzonFbsTab({ clientId, apiKey }: Props) {
   const [loading, setLoading] = useState(false);
   const [counts, setCounts] = useState({
-    awaiting_packaging: 1,
+    awaiting_packaging: 0,
     awaiting_deliver: 0,
-    delivering: 11,
+    delivering: 0,
     dispute: 0,
     delivered: 0,
     cancelled: 0,
-    all: 12
+    all: 0
   });
 
   const [activeTab, setActiveTab] = useState('awaiting_packaging');
