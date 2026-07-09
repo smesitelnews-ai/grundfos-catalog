@@ -26,8 +26,8 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
     setError(null);
     try {
       const now = new Date();
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString();
+      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString().split('T')[0];
 
       const data = await browserOzonFetch<any>('/v1/finance/accrual/by-day', {
         method: 'POST',

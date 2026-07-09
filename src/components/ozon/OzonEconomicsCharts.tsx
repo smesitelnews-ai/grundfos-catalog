@@ -66,8 +66,8 @@ export function OzonEconomicsCharts({ clientId, apiKey }: OzonEconomicsChartsPro
           body: {
             filter: {
               date: {
-                from: formatIsoDate(dateFrom),
-                to: formatIsoDate(dateTo)
+                from: formatApiDate(dateFrom),
+                to: formatApiDate(dateTo)
               }
             }
           }
