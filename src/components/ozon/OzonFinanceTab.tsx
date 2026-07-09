@@ -26,31 +26,39 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
     setError(null);
     try {
       const now = new Date();
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString().split('T')[0];
+      const numDays = now.getDate(); // get current day of month (1 to 31)
+      
+      const days = Array.from({ length: numDays }, (_, i) => {
+        const d = new Date(now.getFullYear(), now.getMonth(), i + 1);
+        return d.toISOString().split('T')[0];
+      });
 
-      const data = await browserOzonFetch<any>('/v1/finance/accrual/by-day', {
-        method: 'POST',
-        clientId,
-        apiKey,
-        body: {
-          filter: {
-            date: { from: firstDay, to: lastDay }
-          }
+      const promises = days.map(day => 
+        browserOzonFetch<any>('/v1/finance/accrual/by-day', {
+          method: 'POST',
+          clientId,
+          apiKey,
+          body: { date: day }
+        }).catch(err => null) // ignore errors for specific days
+      );
+
+      const responses = await Promise.all(promises);
+      
+      let totalRevenue = 0;
+      let totalProfit = 0;
+      let hasData = false;
+
+      responses.forEach((res) => {
+        if (res && res.result && Array.isArray(res.result)) {
+           hasData = true;
+           res.result.forEach((accrual: any) => {
+             totalRevenue += accrual.revenue || 0;
+             totalProfit += accrual.profit || 0;
+           });
         }
       });
 
-      if (data && data.result) {
-        let totalRevenue = 0;
-        let totalProfit = 0;
-        
-        data.result.forEach((dayData: any) => {
-           totalRevenue += dayData.revenue || 0;
-           totalProfit += dayData.profit || 0;
-        });
-
-        // Поскольку Ozon убрал детализацию по услугам в агрегированном v1 методе,
-        // мы считаем начисления как общую выручку (revenue), а списания как разницу между выручкой и профитом.
+      if (hasData) {
         setFinanceData({
           accruals_for_sale: totalRevenue,
           refunds_and_cancellations: 0,

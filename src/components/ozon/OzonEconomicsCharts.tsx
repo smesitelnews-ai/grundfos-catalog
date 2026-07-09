@@ -61,30 +61,28 @@ export function OzonEconomicsCharts({ clientId, apiKey }: OzonEconomicsChartsPro
       // 2. Fetch Accruals (v1/finance/accrual/by-day)
       // Note: If this fails, we will catch it and show 0.
       try {
-        const accrualsResponse = await browserOzonFetch<any>('/v1/finance/accrual/by-day', {
-          clientId, apiKey, method: 'POST',
-          body: {
-            filter: {
-              date: {
-                from: formatApiDate(dateFrom),
-                to: formatApiDate(dateTo)
-              }
-            }
+        const promises = days.map(day => 
+           browserOzonFetch<any>('/v1/finance/accrual/by-day', {
+             clientId, apiKey, method: 'POST',
+             body: { date: day }
+           }).catch(() => null)
+        );
+        
+        const responses = await Promise.all(promises);
+        
+        responses.forEach((accrualsResponse, i) => {
+          if (accrualsResponse && accrualsResponse.result && Array.isArray(accrualsResponse.result)) {
+             const day = days[i];
+             const dayIndex = finalChartData.findIndex(d => d.date === day);
+             if (dayIndex !== -1) {
+                accrualsResponse.result.forEach((accrual: any) => {
+                   finalChartData[dayIndex].revenue += accrual.revenue || 0;
+                   finalChartData[dayIndex].profit += accrual.profit || 0;
+                   totalRevenue += accrual.revenue || 0;
+                });
+             }
           }
         });
-        
-        // Process accruals data if successful
-        if (accrualsResponse && accrualsResponse.result) {
-          // Add data logic here. For now, simulate if empty to show the graph working
-          accrualsResponse.result.forEach((dayData: any) => {
-            const dayIndex = finalChartData.findIndex(d => d.date === dayData.date);
-            if (dayIndex !== -1) {
-               finalChartData[dayIndex].revenue = dayData.revenue || 0;
-               finalChartData[dayIndex].profit = dayData.profit || 0;
-               totalRevenue += dayData.revenue || 0;
-            }
-          });
-        }
       } catch (err: any) {
         console.warn('Ozon Accruals API error or not available:', err.message);
       }
