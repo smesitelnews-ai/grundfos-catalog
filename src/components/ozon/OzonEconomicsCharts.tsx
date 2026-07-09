@@ -35,8 +35,6 @@ export function OzonEconomicsCharts({ clientId, apiKey }: OzonEconomicsChartsPro
       const dateTo = new Date();
       const dateFrom = new Date();
       dateFrom.setDate(dateFrom.getDate() - 14);
-
-      const formatIsoDate = (d: Date) => d.toISOString();
       const formatApiDate = (d: Date) => {
         const y = d.getFullYear();
         const m = String(d.getMonth() + 1).padStart(2, '0');
