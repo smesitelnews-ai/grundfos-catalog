@@ -75,44 +75,53 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
             Пополнить основной баланс
           </button>
-        </div>
+      {/* Date Filter */}
+      <div className="flex gap-2 mb-6">
+        {['Вчера', 'Сегодня', 'Неделя', 'Месяц'].map(period => (
+          <button 
+            key={period}
+            className="px-4 py-2 text-sm font-medium border border-border rounded-lg text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
+          >
+            {period}
+          </button>
+        ))}
       </div>
 
-      {/* Debt Warning */}
-      <div className="bg-red-50 p-6 rounded-xl mb-8">
-        <h3 className="font-bold text-lg mb-2">У вас есть задолженность {debt.toLocaleString('ru-RU')} ₽</h3>
-        <p className="text-sm mb-4 text-gray-800">
-          Приостановили доступ к некоторым услугам. Пополните баланс, чтобы не оставаться в минусе.
-        </p>
-        <p className="text-sm text-gray-600 mb-4">
-          Формируем счет на оплату, только если зафиксировали задолженность за предыдущий месяц.<br/>
-          Посмотреть счета можно в разделе Финансы → Документы → Счета на оплату
-        </p>
-        <div className="flex gap-6 text-sm font-medium">
-          <a href="#" className="text-gray-900 hover:underline">Подробнее в Базе знаний</a>
-          <a href="#" className="text-blue-600 hover:underline">Посмотреть счета</a>
-        </div>
-      </div>
-
-      {/* Balance Details */}
-      <div className="flex flex-col md:flex-row gap-8 border-t border-gray-100 pt-8">
-        <div className="w-64">
-          <div className="text-3xl font-bold mb-1">{currentBalance.toLocaleString('ru-RU')} ₽</div>
-          <div className="text-sm text-gray-500">Текущий баланс</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        
+        {/* Balance Card */}
+        <div className="bg-gray-50 dark:bg-zinc-800 p-6 rounded-xl border border-border">
+          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+            <span className="text-sm font-medium">Ваш баланс на сегодня</span>
+            <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" strokeWidth="2"/><path d="M12 16v-4M12 8h.01" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <div className={`text-4xl font-bold mb-4 ${currentBalance < 0 ? 'text-red-500' : 'text-foreground'}`}>
+            {currentBalance.toLocaleString('ru-RU')} ₽
+          </div>
+          <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-lg w-full transition-colors">
+            Вывести деньги
+          </button>
         </div>
 
-        <div className="flex-1 max-w-sm space-y-4 text-sm">
-          <div className="flex justify-between">
-            <span className="text-gray-500">На начало июля</span>
-            <span className="font-medium">{startOfMonthBalance.toLocaleString('ru-RU')} ₽</span>
+        {/* Expenses Card */}
+        <div className="bg-gray-50 dark:bg-zinc-800 p-6 rounded-xl border border-border">
+          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+            <span className="text-sm font-medium">Расходы и услуги</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-500">Начислено в июле</span>
-            <span className="font-medium">{accrued.toLocaleString('ru-RU')} ₽</span>
+          <div className="text-2xl font-bold text-foreground">
+            {expenses.toLocaleString('ru-RU')} ₽
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-500">Выплачено в июле</span>
-            <span className="font-medium">{paid.toLocaleString('ru-RU')} ₽</span>
+        </div>
+
+        {/* Income Card */}
+        <div className="bg-gray-50 dark:bg-zinc-800 p-6 rounded-xl border border-border">
+          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+            <span className="text-sm font-medium">Начисления</span>
+          </div>
+          <div className="text-2xl font-bold text-foreground">
+            0 ₽
           </div>
         </div>
       </div>

@@ -115,28 +115,47 @@ export default function OzonDashboard() {
         getCount("VALIDATION_STATE_FAIL")
       ]);
 
-      const listResponse = await browserOzonFetch<any>('/v3/product/list', {
-        method: 'POST', clientId: cId, apiKey: aKey,
-        body: { filter: { visibility: "ALL" }, limit: 50 }
-      });
-
-      const items = listResponse?.result?.items || [];
-      const productIds = items.map((i: any) => i.product_id);
-
-      let allProducts: any[] = [];
-      if (productIds.length > 0) {
-        try {
-          const infoResponse = await browserOzonFetch<any>('/v3/product/info/list', {
-            method: 'POST', clientId: cId, apiKey: aKey,
-            body: { product_id: productIds, offer_id: [], sku: [] }
-          });
-          allProducts = infoResponse?.items || infoResponse?.result?.items || [];
-        } catch (error) {
-          console.error(`[Ozon] Ошибка при загрузке деталей товаров:`, error);
+      let allItems: any[] = [];
+      let lastId = "";
+      let isFetching = true;
+      
+      while (isFetching) {
+        const listResponse = await browserOzonFetch<any>('/v3/product/list', {
+          method: 'POST', clientId: cId, apiKey: aKey,
+          body: { filter: { visibility: "ALL" }, limit: 1000, last_id: lastId }
+        });
+        
+        const items = listResponse?.result?.items || [];
+        allItems = allItems.concat(items);
+        lastId = listResponse?.result?.last_id || "";
+        
+        if (!lastId || items.length === 0) {
+          isFetching = false;
         }
       }
 
-      setOzonProducts(allProducts);
+      const productIds = allItems.map((i: any) => i.product_id);
+
+      let allProductsInfo: any[] = [];
+      const chunkSize = 500;
+      
+      for (let i = 0; i < productIds.length; i += chunkSize) {
+        const chunk = productIds.slice(i, i + chunkSize);
+        if (chunk.length > 0) {
+          try {
+            const infoResponse = await browserOzonFetch<any>('/v3/product/info/list', {
+              method: 'POST', clientId: cId, apiKey: aKey,
+              body: { product_id: chunk, offer_id: [], sku: [] }
+            });
+            const infos = infoResponse?.items || infoResponse?.result?.items || [];
+            allProductsInfo = allProductsInfo.concat(infos);
+          } catch (error) {
+            console.error(`[Ozon] Ошибка при загрузке чанка деталей товаров:`, error);
+          }
+        }
+      }
+
+      setOzonProducts(allProductsInfo);
       setOzonStats({ total, inSale, toSupply, errors: errorsCount });
     } catch (error: any) {
       console.error("[Ozon fetch error]", error);

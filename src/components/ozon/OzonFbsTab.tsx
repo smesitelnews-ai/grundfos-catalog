@@ -72,47 +72,52 @@ export function OzonFbsTab({ clientId, apiKey }: Props) {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-black">
-      <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <span>FBS</span>
-      </div>
-
+    <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-border shadow-sm text-foreground overflow-hidden">
+      
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold">Заказы с моих складов</h2>
-        <div className="flex gap-4">
-          <button className="px-4 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-foreground">Заказы с моих складов</h2>
+        <div className="flex gap-2">
+          <button className="px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
             Скачать <span className="text-xs">▼</span>
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-500">
             Собрать все
           </button>
         </div>
       </div>
 
-      {/* Warning Badges */}
-      <div className="flex flex-wrap gap-3 mb-8">
-        <span className="px-3 py-1.5 bg-teal-50 text-teal-700 rounded-lg text-sm font-medium">Не получайте штрафы за опоздания</span>
-        <span className="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-sm font-medium">Ошибки в габаритах и весе товаров</span>
-        <span className="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-sm font-medium">Укажите штрихкоды товаров</span>
-        <span className="px-3 py-1.5 bg-teal-50 text-teal-700 rounded-lg text-sm font-medium">Оцените пункт отгрузки</span>
+      {/* Info Banners */}
+      <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
+        <div className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
+          Не получайте штрафы за опоздания
+        </div>
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
+          Ошибки в габаритах и весе товаров
+        </div>
+        <div className="bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
+          Укажите штрихкоды товаров
+        </div>
+        <div className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
+          Оцените пункт отгрузки
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 flex gap-6 mb-6 overflow-x-auto">
+      <div className="border-b border-border flex gap-6 mb-6 overflow-x-auto">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`pb-3 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
+            className={`pb-4 text-sm font-bold border-b-2 whitespace-nowrap transition-colors flex items-center gap-2 ${
               activeTab === tab.id 
-                ? 'border-blue-600 text-blue-600' 
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-blue-500 text-blue-500' 
+                : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
             {tab.label}
-            {tab.count > 0 && (
-              <span className={`ml-2 px-1.5 py-0.5 rounded-full text-xs ${
-                activeTab === tab.id ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'
+            {tab.count >= 0 && (
+              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                activeTab === tab.id ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400'
               }`}>
                 {tab.count}
               </span>
@@ -121,45 +126,45 @@ export function OzonFbsTab({ clientId, apiKey }: Props) {
         ))}
       </div>
 
-      {/* Filters Area */}
-      <div className="flex flex-wrap gap-3 mb-6 items-center border-b border-gray-100 pb-6">
-        <select className="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium outline-none">
-          <option>Схема</option>
-        </select>
-        <select className="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium outline-none">
-          <option>Склад</option>
-        </select>
-        <select className="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium outline-none">
-          <option>Служба</option>
-        </select>
-        <select className="px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium outline-none">
-          <option>Метод</option>
-        </select>
-
+      {/* Filters */}
+      <div className="flex flex-wrap gap-3 mb-12">
+        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
+          Схема <span className="text-xs">▼</span>
+        </button>
+        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
+          Склад <span className="text-xs">▼</span>
+        </button>
+        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
+          Служба <span className="text-xs">▼</span>
+        </button>
+        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
+          Метод <span className="text-xs">▼</span>
+        </button>
+        
         <div className="flex gap-2 ml-4">
-          <button className="px-3 py-2 bg-white border border-blue-600 text-blue-600 rounded-lg text-sm font-medium">
+          <button className="px-4 py-2 border border-blue-500 rounded-lg text-sm font-bold text-blue-500 bg-blue-50 dark:bg-blue-900/20">
             Все дни 1
           </button>
-          <button className="px-3 py-2 bg-white border border-transparent text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium">
+          <button className="px-4 py-2 border border-transparent text-muted-foreground hover:text-foreground text-sm font-medium">
             Сегодня 1
           </button>
-          <button className="px-3 py-2 bg-white border border-transparent text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium">
+          <button className="px-4 py-2 border border-transparent text-muted-foreground hover:text-foreground text-sm font-medium">
             Завтра
           </button>
-          <button className="px-3 py-2 bg-white border border-transparent text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium flex items-center gap-1">
+          <button className="px-4 py-2 border border-transparent text-muted-foreground hover:text-foreground text-sm font-medium">
             Период <span className="text-xs">▼</span>
           </button>
         </div>
       </div>
-      
-      {loading ? (
-         <div className="py-12 text-center text-gray-500">Загрузка данных...</div>
-      ) : (
-         <div className="py-12 flex flex-col items-center justify-center text-gray-400">
-           <div className="w-16 h-16 bg-gray-100 rounded-full mb-4"></div>
-           <p>Здесь будут отображаться заказы в выбранном статусе</p>
-         </div>
-      )}
+
+      {/* Empty State / Loading */}
+      <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+        <div className="w-16 h-16 bg-gray-100 dark:bg-zinc-800 rounded-full mb-4 animate-pulse"></div>
+        <p className="text-sm">
+          {loading ? "Загрузка данных..." : "Здесь будут отображаться заказы в выбранном статусе"}
+        </p>
+      </div>
+
     </div>
   );
 }
