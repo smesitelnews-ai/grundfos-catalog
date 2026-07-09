@@ -128,28 +128,7 @@ export function OzonEconomicsCharts({ clientId, apiKey }: OzonEconomicsChartsPro
       const hasRealData = finalChartData.some(d => d.revenue > 0 || d.views > 0);
       
       if (!hasRealData) {
-        console.log("No real data found, using mock data for demonstration");
-        let mockRevenueAcc = 0;
-        let mockViewsAcc = 0;
-        let mockOrdersAcc = 0;
-        finalChartData = finalChartData.map(d => {
-           const rev = Math.floor(Math.random() * 50000);
-           const views = Math.floor(Math.random() * 500) + 100;
-           const orders = Math.floor(Math.random() * 5);
-           mockRevenueAcc += rev;
-           mockViewsAcc += views;
-           mockOrdersAcc += orders;
-           return {
-             ...d,
-             revenue: rev,
-             profit: rev * 0.25, // Mock 25% profit
-             views,
-             orders
-           };
-        });
-        totalRevenue = mockRevenueAcc;
-        totalViews = mockViewsAcc;
-        totalOrders = mockOrdersAcc;
+        console.log("No real data found, showing zeros");
       }
 
       setChartData(finalChartData);
