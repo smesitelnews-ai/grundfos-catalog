@@ -37,7 +37,12 @@ export function OzonEconomicsCharts({ clientId, apiKey }: OzonEconomicsChartsPro
       dateFrom.setDate(dateFrom.getDate() - 14);
 
       const formatIsoDate = (d: Date) => d.toISOString();
-      const formatApiDate = (d: Date) => d.toISOString().split('T')[0];
+      const formatApiDate = (d: Date) => {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const dayStr = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${dayStr}`;
+      };
 
       // Array of last 14 days for building the chart base
       const days = Array.from({ length: 14 }, (_, i) => {
