@@ -29,32 +29,42 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
       const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
       const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString();
 
-      const data = await browserOzonFetch<any>('/v3/finance/transaction/totals', {
+      const data = await browserOzonFetch<any>('/v1/finance/accrual/by-day', {
         method: 'POST',
         clientId,
         apiKey,
         body: {
-          date: { from: firstDay, to: lastDay },
-          posting_number: "",
-          transaction_type: "all"
+          filter: {
+            date: { from: firstDay, to: lastDay }
+          }
         }
       });
 
       if (data && data.result) {
+        let totalRevenue = 0;
+        let totalProfit = 0;
+        
+        data.result.forEach((dayData: any) => {
+           totalRevenue += dayData.revenue || 0;
+           totalProfit += dayData.profit || 0;
+        });
+
+        // Поскольку Ozon убрал детализацию по услугам в агрегированном v1 методе,
+        // мы считаем начисления как общую выручку (revenue), а списания как разницу между выручкой и профитом.
         setFinanceData({
-          accruals_for_sale: data.result.accruals_for_sale || 0,
-          refunds_and_cancellations: data.result.refunds_and_cancellations || 0,
-          services_amount: data.result.services_amount || 0,
-          compensation_amount: data.result.compensation_amount || 0,
-          money_transfer: data.result.money_transfer || 0,
-          others_amount: data.result.others_amount || 0,
+          accruals_for_sale: totalRevenue,
+          refunds_and_cancellations: 0,
+          services_amount: totalRevenue - totalProfit,
+          compensation_amount: 0,
+          money_transfer: 0,
+          others_amount: 0,
         });
       } else {
-        throw new Error("Не удалось получить данные о финансах");
+        throw new Error("Не удалось получить данные о финансах (Пустой ответ API)");
       }
     } catch (err: any) {
       console.error('Finance error:', err);
-      setError(err.message || 'Ошибка загрузки финансов');
+      setError(err.message || 'Ошибка загрузки финансов (Возможно нет прав на API аналитики)');
     } finally {
       setLoading(false);
     }
@@ -68,7 +78,7 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
 
   const currentMonthName = new Date().toLocaleString('ru-RU', { month: 'long' });
   const totalForMonth = financeData 
-    ? (financeData.accruals_for_sale + financeData.refunds_and_cancellations + financeData.services_amount + financeData.compensation_amount + financeData.others_amount + financeData.money_transfer)
+    ? (financeData.accruals_for_sale - financeData.services_amount)
     : 0;
 
   return (
@@ -144,11 +154,11 @@ export function OzonFinanceTab({ clientId, apiKey }: Props) {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Начислено в {currentMonthName}</span>
-                <span className="font-medium">{(financeData.accruals_for_sale + financeData.compensation_amount).toLocaleString('ru-RU')} ₽</span>
+                <span className="font-medium">{financeData.accruals_for_sale.toLocaleString('ru-RU')} ₽</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Списано в {currentMonthName}</span>
-                <span className="font-medium">{(financeData.services_amount + financeData.refunds_and_cancellations + financeData.others_amount).toLocaleString('ru-RU')} ₽</span>
+                <span className="font-medium">{financeData.services_amount.toLocaleString('ru-RU')} ₽</span>
               </div>
             </div>
           </div>
