@@ -86,21 +86,6 @@ export function OzonFbsTab({ clientId, apiKey }: Props) {
         </div>
       </div>
 
-      {/* Info Banners */}
-      <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
-        <div className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
-          Не получайте штрафы за опоздания
-        </div>
-        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
-          Ошибки в габаритах и весе товаров
-        </div>
-        <div className="bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
-          Укажите штрихкоды товаров
-        </div>
-        <div className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
-          Оцените пункт отгрузки
-        </div>
-      </div>
 
       {/* Tabs */}
       <div className="border-b border-border flex gap-6 mb-6 overflow-x-auto">
@@ -126,36 +111,6 @@ export function OzonFbsTab({ clientId, apiKey }: Props) {
         ))}
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-3 mb-12">
-        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
-          Схема <span className="text-xs">▼</span>
-        </button>
-        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
-          Склад <span className="text-xs">▼</span>
-        </button>
-        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
-          Служба <span className="text-xs">▼</span>
-        </button>
-        <button className="px-4 py-2 border border-border rounded-lg text-sm text-foreground hover:bg-gray-50 dark:hover:bg-zinc-800">
-          Метод <span className="text-xs">▼</span>
-        </button>
-        
-        <div className="flex gap-2 ml-4">
-          <button className="px-4 py-2 border border-blue-500 rounded-lg text-sm font-bold text-blue-500 bg-blue-50 dark:bg-blue-900/20">
-            Все дни 1
-          </button>
-          <button className="px-4 py-2 border border-transparent text-muted-foreground hover:text-foreground text-sm font-medium">
-            Сегодня 1
-          </button>
-          <button className="px-4 py-2 border border-transparent text-muted-foreground hover:text-foreground text-sm font-medium">
-            Завтра
-          </button>
-          <button className="px-4 py-2 border border-transparent text-muted-foreground hover:text-foreground text-sm font-medium">
-            Период <span className="text-xs">▼</span>
-          </button>
-        </div>
-      </div>
 
       {/* Empty State / Loading */}
       <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
